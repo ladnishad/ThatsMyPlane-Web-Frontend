@@ -1,23 +1,33 @@
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Routes, Navigate  } from "react-router-dom";
+
+import { RoutesForApp } from "./routes"
+import PrimarySearchAppBar from "./pages/components/Header"
 import './App.css';
 
-function App() {
+const App = () => {
+
+  const routes = RoutesForApp.map(({ path, element: Component }) => (
+    <Route
+      key={path}
+      path={path}
+      render={(props) => (
+        <Component
+          {...props}
+        />
+      )}
+    />
+  ))
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <PrimarySearchAppBar />
+        <Router>
+          <Routes>
+              <Route exact path="/" render={() => <Navigate  to="/home" />} />
+              {routes}
+              <Route render={() => <span>Invalid route</span>} />
+          </Routes>
+        </Router>
     </div>
   );
 }
