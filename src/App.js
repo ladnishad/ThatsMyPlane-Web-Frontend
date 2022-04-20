@@ -1,33 +1,31 @@
 import { BrowserRouter as Router, Route, Routes, Navigate  } from "react-router-dom";
 
 import { RoutesForApp } from "./routes"
-import PrimarySearchAppBar from "./pages/components/Header"
+import { HeaderComponent } from "./pages/components/AppHeader/HeaderComponent"
+import { BottomNavigationComponent } from "./pages/components/AppFooter/FooterComponent"
+
 import './App.css';
 
 const App = () => {
 
-  const routes = RoutesForApp.map(({ path, element: Component }) => (
+  const routes = RoutesForApp.map(({ path, element }) => (
     <Route
       key={path}
       path={path}
-      render={(props) => (
-        <Component
-          {...props}
-        />
-      )}
+      element={element}
     />
   ))
 
   return (
     <div className="App">
-      <PrimarySearchAppBar />
-        <Router>
+      <HeaderComponent />
           <Routes>
-              <Route exact path="/" render={() => <Navigate  to="/home" />} />
+              <Route exact path="/" element={<Navigate  to="/home" replace />} />
+              <Route path="*" element={<Navigate  to="/home" replace />} />
               {routes}
               <Route render={() => <span>Invalid route</span>} />
           </Routes>
-        </Router>
+        <BottomNavigationComponent />
     </div>
   );
 }

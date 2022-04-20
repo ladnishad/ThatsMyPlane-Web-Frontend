@@ -1,13 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter as Router  } from "react-router-dom";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+const theme = createTheme({
+  typography: {
+    appname: {
+      fontFamily: '"Pacifico", cursive',
+      fontSize: 26
+    }
+  },
+})
+
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <Router>
+        <App />
+        </Router>
+    </ThemeProvider>
   </React.StrictMode>
 );
 

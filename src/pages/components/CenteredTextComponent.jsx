@@ -3,8 +3,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 export const CenteredTextComponent=({ text })=>{
-  console.log(text)
-	return(
+  return(
 		<Grid
         container
         spacing={0}
@@ -13,7 +12,7 @@ export const CenteredTextComponent=({ text })=>{
         justify="center"
         style={{ minHeight: "100vh" }}
       >
-        <Typography variant="h4" color="textSecondary" align="center">
+        <Typography variant="h4" align="center">
           { text }
         </Typography>
       </Grid>
