@@ -1,9 +1,10 @@
 import { CenteredTextComponent } from "./pages/components/CenteredTextComponent"
+import { BaseForHomePage } from "./pages/homePage/BaseForHomePage"
 
 export const RoutesForApp = [
   {
     path: "/home",
-    element: <CenteredTextComponent text="Home" /> ,
+    element: <BaseForHomePage /> ,
   },
   {
     path: "/discover",

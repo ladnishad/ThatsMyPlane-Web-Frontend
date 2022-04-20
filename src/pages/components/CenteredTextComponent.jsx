@@ -10,7 +10,6 @@ export const CenteredTextComponent=({ text })=>{
         direction="column"
         alignItems="center"
         justify="center"
-        style={{ minHeight: "100vh" }}
       >
         <Typography variant="h4" align="center">
           { text }
