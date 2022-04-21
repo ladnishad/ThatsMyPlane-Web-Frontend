@@ -4,7 +4,7 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import FolderIcon from '@mui/icons-material/Folder';
 import HomeIcon from '@mui/icons-material/Home';
-import SearchIcon from '@mui/icons-material/Search';
+import ExploreIcon from '@mui/icons-material/Explore';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link, useNavigate } from "react-router-dom";
 
@@ -19,7 +19,7 @@ export const BottomNavigationComponent = () => {
       case "home":
         navigate("/home")
         break
-      case "search":
+      case "discover":
         navigate("/discover")
         break
       case "account":
@@ -40,9 +40,9 @@ export const BottomNavigationComponent = () => {
         icon={<HomeIcon />}
       />
       <BottomNavigationAction
-        label="Search"
-        value="search"
-        icon={<SearchIcon />}
+        label="Discover"
+        value="discover"
+        icon={<ExploreIcon />}
       />
       <BottomNavigationAction
         label="Account"
