@@ -23,7 +23,7 @@ export const HeaderComponent = () => {
           component="div"
           sx={{ display: { xs: 'none', sm: 'block' } }}
         >
-          TrackMyFlights
+          ThatsMyPlane
         </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
