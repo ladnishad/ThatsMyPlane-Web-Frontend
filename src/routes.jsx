@@ -1,3 +1,5 @@
+import { SignIn } from "./pages/login/LoginComponent"
+import { SignUp } from "./pages/login/SignUpComponent"
 import { CenteredTextComponent } from "./pages/components/CenteredTextComponent"
 import { BaseForHomePage } from "./pages/homePage/BaseForHomePage"
 
@@ -13,5 +15,13 @@ export const RoutesForApp = [
   {
     path: "/account",
     element: <CenteredTextComponent text="Account" /> ,
+  },
+  {
+    path: "/login",
+    element: <SignIn /> ,
+  },
+  {
+    path: "/signup",
+    element: <SignUp /> ,
   },
 ]

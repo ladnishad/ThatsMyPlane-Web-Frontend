@@ -58,7 +58,7 @@ export const HeaderComponent = () => {
             component="div"
             sx={{ display: { xs: 'flex', sm: 'block' } }}
           >
-            TrackMyFlights
+            ThatsMyPlane
           </Typography>
             <IconButton
               size="large"
