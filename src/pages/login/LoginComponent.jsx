@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from "../../api/axios"
 
 function Copyright(props) {
   return (
@@ -29,13 +30,30 @@ function Copyright(props) {
 const theme = createTheme();
 
 export const SignIn = () => {
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get('email'),
       password: data.get('password'),
     });
+
+    try{
+      const { email, password } = data
+      const loginResponse = await axios.post("/login", JSON.stringify({ email, password }), {
+        headers: { 'Content-Type': 'application/json'},
+        withCredentials: true
+      })
+
+      console.log(loginResponse.data)
+    } catch(e){
+      if(!e?.loginResponse){
+        console.log("No server response")
+      }
+      else{
+        console.log(e)
+      }
+    }
   };
 
   return (
