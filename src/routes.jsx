@@ -3,7 +3,18 @@ import { SignUp } from "./pages/login/SignUpComponent"
 import { CenteredTextComponent } from "./pages/components/CenteredTextComponent"
 import { BaseForHomePage } from "./pages/homePage/BaseForHomePage"
 
-export const RoutesForApp = [
+export const PublicRoutes = [
+  {
+    path: "/login",
+    element: <SignIn /> ,
+  },
+  {
+    path: "/signup",
+    element: <SignUp /> ,
+  },
+]
+
+export const PrivateRoutes = [
   {
     path: "/home",
     element: <BaseForHomePage /> ,
@@ -15,13 +26,5 @@ export const RoutesForApp = [
   {
     path: "/account",
     element: <CenteredTextComponent text="Account" /> ,
-  },
-  {
-    path: "/login",
-    element: <SignIn /> ,
-  },
-  {
-    path: "/signup",
-    element: <SignUp /> ,
   },
 ]

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,7 +12,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Link as ReactRouterLink, useNavigate, useLocation } from 'react-router-dom';
 import axios from "../../api/axios"
+import useAuth from "../../hooks/useAuth"
 
 function Copyright(props) {
   return (
@@ -30,6 +32,12 @@ function Copyright(props) {
 const theme = createTheme();
 
 export const SignIn = () => {
+  const { setAuth } = useAuth()
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
   const handleSubmit = async(event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -45,8 +53,13 @@ export const SignIn = () => {
         withCredentials: true
       })
 
-      console.log(loginResponse.data)
+
+      console.log(JSON.stringify(loginResponse?.data))
+      const accessToken = loginResponse?.data?.token;
+      setAuth({ email, password, accessToken });
+      navigate(from, { replace: true });
     } catch(e){
+      console.log(e)
       if(!e?.loginResponse){
         console.log("No server response")
       }
