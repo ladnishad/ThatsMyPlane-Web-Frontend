@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = "https://thatsmyplane.com"
+const BASE_URL = "https://api.thatsmyplane.com"
 
 export default axios.create({
   baseURL: BASE_URL
