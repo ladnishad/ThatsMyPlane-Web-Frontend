@@ -1,25 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import axios from "axios"
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate"
 import { CenteredTextComponent } from "../components/CenteredTextComponent"
 
-const getAircraftsNearUser = async({ long, lat }) => {
-    const reqBody = {
-      startLongitude: long,
-      startLatitude: lat,
-    }
-
-    const headers = {
-      "Authorization": "", //Add jwt here
-    }
-    const airports = await axios.get("localhost:5000/airports/nearby", { data: reqBody}, { headers: headers })
-
-    console.log(airports)
-}
 
 export const BaseForHomePage = () => {
-  const [position, setPosition] = useState({ lat: 0, long: 0})
+  const [position, setPosition] = useState({ lat: null, long: null})
+  const axiosPrivate = useAxiosPrivate()
     useEffect(() => {
       if("geolocation" in  navigator){
         navigator.geolocation.getCurrentPosition(async function(position) {
@@ -35,7 +23,28 @@ export const BaseForHomePage = () => {
     }, [])
 
     useEffect(() => {
-      getAircraftsNearUser({ long: position.long, lat: position.lat })
+      const { lat, long } = position
+
+      const getAircraftsNearUser = async({ lat, long }) => {
+        const reqBody = {
+          startLongitude: long,
+          startLatitude: lat,
+        }
+        try{
+          const airports = await axiosPrivate({
+            url: "/airports/nearby",
+            method: 'get',
+            data: reqBody
+          })
+
+          console.log(airports.data)
+        } catch(e){
+          console.log(e);
+        }
+      }
+      if(lat !== null && long !== null){
+        getAircraftsNearUser({ long: position.long, lat: position.lat })
+      }
     }, [position])
 
     console.log(position)

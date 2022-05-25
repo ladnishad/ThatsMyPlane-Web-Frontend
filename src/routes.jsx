@@ -5,26 +5,26 @@ import { BaseForHomePage } from "./pages/homePage/BaseForHomePage"
 
 export const PublicRoutes = [
   {
-    path: "/login",
+    path: "login",
     element: <SignIn /> ,
   },
   {
-    path: "/signup",
+    path: "signup",
     element: <SignUp /> ,
   },
 ]
 
 export const PrivateRoutes = [
   {
-    path: "/home",
+    path: "home",
     element: <BaseForHomePage /> ,
   },
   {
-    path: "/discover",
+    path: "discover",
     element: <CenteredTextComponent text="Discover" /> ,
   },
   {
-    path: "/account",
+    path: "account",
     element: <CenteredTextComponent text="Account" /> ,
   },
 ]

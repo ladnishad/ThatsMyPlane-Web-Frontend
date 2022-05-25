@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate, Link } from "react-router-dom"
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,10 +13,17 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 
-import useAuth from "../../../hooks/useAuth"
+import useLogout from "../../../hooks/useLogout"
 
-export const HeaderComponent = () => {
-  const { auth } = useAuth()
+export const HeaderComponent = ({ userLoggedIn }) => {
+  const navigate = useNavigate()
+  const logout = useLogout()
+
+  const signout = async() => {
+    await logout()
+    navigate('/login')
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed">
@@ -29,7 +37,7 @@ export const HeaderComponent = () => {
           ThatsMyPlane
         </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          { auth.user && (
+          { userLoggedIn && (
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                 <Badge badgeContent={4} color="error">
@@ -51,6 +59,7 @@ export const HeaderComponent = () => {
                 aria-label="account of current user"
                 aria-haspopup="true"
                 color="inherit"
+                onClick={signout}
               >
                 <AccountCircle />
               </IconButton>

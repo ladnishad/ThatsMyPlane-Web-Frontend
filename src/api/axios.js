@@ -1,10 +1,10 @@
 import axios from 'axios'
 
-const BASE_URL = 'https://api.thatsmyplane.com'
+const BASE_URL = "http://localhost:5000"
 
 export default axios.create({
-  baseUrl: BASE_URL
-})
+  baseURL: BASE_URL
+});
 
 export const axiosPrivate = axios.create({
     baseURL: BASE_URL,

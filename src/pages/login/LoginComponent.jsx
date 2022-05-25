@@ -32,7 +32,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export const SignIn = () => {
-  const { setAuth } = useAuth()
+  const { setAuth, persist, setPersist } = useAuth()
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,22 +41,23 @@ export const SignIn = () => {
   const handleSubmit = async(event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
 
     try{
-      const { email, password } = data
-      const loginResponse = await axios.post("/login", JSON.stringify({ email, password }), {
+      const email = data.get('email')
+      const password = data.get('password')
+      const reqBody = await JSON.stringify({ email, password })
+
+      const loginResponse = await axios({
+        url: '/login',
+        method: 'post',
+        data: reqBody,
         headers: { 'Content-Type': 'application/json'},
         withCredentials: true
       })
 
-
-      console.log(JSON.stringify(loginResponse?.data))
-      const accessToken = loginResponse?.data?.token;
-      setAuth({ email, password, accessToken });
+      const accessToken = loginResponse?.data?.accessToken;
+      const userId = loginResponse?.data?.userId;
+      setAuth({ userId, accessToken });
       navigate(from, { replace: true });
     } catch(e){
       console.log(e)
@@ -68,6 +69,14 @@ export const SignIn = () => {
       }
     }
   };
+
+  const togglePersist = () => {
+    setPersist(prev => !prev)
+  }
+
+  useEffect(() => {
+    localStorage.setItem("persist", persist)
+  }, [persist])
 
   return (
     <ThemeProvider theme={theme}>
@@ -109,8 +118,8 @@ export const SignIn = () => {
               autoComplete="current-password"
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              control={<Checkbox value={persist} color="primary" onChange={togglePersist} checked={persist} />}
+              label="Remember This Device"
             />
             <Button
               type="submit"
