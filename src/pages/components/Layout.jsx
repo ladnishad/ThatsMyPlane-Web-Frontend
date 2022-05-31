@@ -2,6 +2,9 @@ import { useState, useEffect } from "react"
 import { Outlet } from "react-router-dom"
 import { makeStyles } from '@mui/styles';
 
+import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
+
 import { HeaderComponent } from "./AppHeader/HeaderComponent"
 import { BottomNavigationComponent } from "./AppFooter/FooterComponent"
 
@@ -12,7 +15,7 @@ const AppStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(1),
-    height: "80vh",
+    height: "100%",
     overflow: "auto",
   },
 }))
@@ -34,15 +37,20 @@ const Layout = () => {
 
     return (
         <div className="App">
-          <HeaderComponent userLoggedIn={userLoggedIn} />
-            <main className={classes.content}>
-              <div className={classes.appBarSpace} />
-              <Outlet />
-              { userLoggedIn && (
-                <BottomNavigationComponent />
-              )}
+          <Container fixed>
+            <HeaderComponent userLoggedIn={userLoggedIn} />
 
-            </main>
+              <main className={classes.content}>
+                <div className={classes.appBarSpace} />
+                  <Paper elevation={0}>
+                    <Outlet />
+                  </Paper>
+                { userLoggedIn && (
+                  <BottomNavigationComponent />
+                )}
+
+              </main>
+            </Container>
         </div>
     )
 }

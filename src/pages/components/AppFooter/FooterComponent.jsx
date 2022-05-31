@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import FolderIcon from '@mui/icons-material/Folder';
 import HomeIcon from '@mui/icons-material/Home';
 import ExploreIcon from '@mui/icons-material/Explore';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link, useNavigate } from "react-router-dom";
 
@@ -19,9 +20,19 @@ export const BottomNavigationComponent = () => {
       case "home":
         navigate("/home")
         break
+
       case "discover":
         navigate("/discover")
         break
+
+      case "post":
+        navigate("/post")
+        break
+
+      case "notifications":
+        navigate("/notifications")
+        break
+
       case "account":
         navigate("/account")
         break
@@ -43,6 +54,16 @@ export const BottomNavigationComponent = () => {
         label="Discover"
         value="discover"
         icon={<ExploreIcon />}
+      />
+      <BottomNavigationAction
+        label="Post"
+        value="post"
+        icon={<AddBoxIcon />}
+      />
+      <BottomNavigationAction
+        label="Notifications"
+        value="notifications"
+        icon={<NotificationsIcon />}
       />
       <BottomNavigationAction
         label="Account"
