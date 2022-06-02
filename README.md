@@ -1,3 +1,5 @@
+# ThatsMyPlane web frontend
+
 Project name: thatsmyplane
 
 Project details: Social media for aviation enthusiasts
