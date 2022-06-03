@@ -46,7 +46,7 @@ export const PostTabsComponent = () => {
         <Tab label="Spotting" {...a11yProps(2)} />
       </Tabs>
       <TabComponent value={value} index={0}>
-        <CenteredTextComponent text="Add flights to get memories with the plane" />
+        <CenteredTextComponent text="Add flights to get memories with aircrafts" />
       </TabComponent>
 
       <TabComponent value={value} index={1}>

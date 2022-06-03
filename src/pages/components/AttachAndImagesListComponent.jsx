@@ -9,18 +9,23 @@ export const AttachAndImagesListComponent = () => {
   const [selectedImages, setSelectedImages] = useState([])
 
   return (
-    <Grid container spacing={2} xs={12}>
-      <Grid item xs={12} container spacing={1}>
-        <Grid item xs sx={{ height: 60 }}>
-          <AttachImagesButton selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
-        </Grid>
-        <Grid item xs sx={{ height: 60 }}>
-          <UploadImagesButton />
-        </Grid>
+    <Grid container spacing={2} xs={12} direction="column">
+      <Grid item xs={12} sx={{ width: "100%", height: 60 }}>
+        <AttachImagesButton selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
       </Grid>
-      <Grid item xs={12}>
+
+      <Grid item xs={12} sx={{ width: "100%" }}>
         <ImagesListComponent selectedImages={selectedImages} />
       </Grid>
+
+      {
+        selectedImages.length > 0 && (
+          <Grid item xs={12} sx={{ width: "100%", height: 60 }}>
+            <UploadImagesButton />
+          </Grid>
+        )
+      }
+
     </Grid>
   )
 }

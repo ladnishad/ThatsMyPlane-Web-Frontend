@@ -4,7 +4,7 @@ import ImageListItem from '@mui/material/ImageListItem';
 
 export const ImagesListComponent = ({ selectedImages }) => {
   return (
-    <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
+    <ImageList sx={{ width: 500, height: 300 }} cols={3} rowHeight={164}>
       {selectedImages.map((item) => (
         <ImageListItem key={item.fileUrl}>
           <img
