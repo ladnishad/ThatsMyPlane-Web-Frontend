@@ -7,33 +7,34 @@ import ExploreIcon from '@mui/icons-material/Explore';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation  } from "react-router-dom";
 
 export const BottomNavigationComponent = () => {
-  const [value, setValue] = useState('home');
+  const location = useLocation();
+  const [value, setValue] = useState(location.pathname);
 
   const navigate = useNavigate();
   const handleChange = (event, newValue) => {
     setValue(newValue);
 
     switch(newValue){
-      case "home":
+      case "/home":
         navigate("/home")
         break
 
-      case "discover":
+      case "/discover":
         navigate("/discover")
         break
 
-      case "post":
+      case "/post":
         navigate("/post")
         break
 
-      case "notifications":
+      case "/notifications":
         navigate("/notifications")
         break
 
-      case "account":
+      case "/account":
         navigate("/account")
         break
       default:
@@ -47,27 +48,27 @@ export const BottomNavigationComponent = () => {
     <BottomNavigation value={value} onChange={handleChange}>
       <BottomNavigationAction
         label="Home"
-        value="home"
+        value="/home"
         icon={<HomeIcon />}
       />
       <BottomNavigationAction
         label="Discover"
-        value="discover"
+        value="/discover"
         icon={<ExploreIcon />}
       />
       <BottomNavigationAction
         label="Post"
-        value="post"
+        value="/post"
         icon={<AddBoxIcon />}
       />
       <BottomNavigationAction
         label="Notifications"
-        value="notifications"
+        value="/notifications"
         icon={<NotificationsIcon />}
       />
       <BottomNavigationAction
         label="Account"
-        value="account"
+        value="/account"
         icon={<AccountCircleIcon />}
       />
       </BottomNavigation>

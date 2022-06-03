@@ -2,6 +2,7 @@ import { SignIn } from "./pages/login/LoginComponent"
 import { SignUp } from "./pages/login/SignUpComponent"
 import { CenteredTextComponent } from "./pages/components/CenteredTextComponent"
 import { BaseForHomePage } from "./pages/homePage/BaseForHomePage"
+import { BaseForPostPage } from "./pages/post/BaseForPostPage"
 import { BaseForAccountPage } from "./pages/account/BaseComponent"
 
 export const PublicRoutes = [
@@ -26,7 +27,7 @@ export const PrivateRoutes = [
   },
   {
     path: "post",
-    element: <CenteredTextComponent text="Post" /> ,
+    element: <BaseForPostPage /> ,
   },
   {
     path: "notifications",
