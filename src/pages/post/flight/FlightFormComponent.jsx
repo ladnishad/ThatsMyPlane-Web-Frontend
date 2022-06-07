@@ -27,7 +27,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export const AirlineSelect = () => {
+export const AirlineSelect = ({ value, setValue }) => {
   const [airlines, setAirlines] = useState([])
   const axiosPrivate = useAxiosPrivate()
 
@@ -54,6 +54,10 @@ export const AirlineSelect = () => {
       id="airline-select"
       name="airline-select"
       disablePortal
+      value={value}
+      onChange={(e, newValue) => {
+        setValue(newValue)
+      }}
       options={airlines}
       autoHighlight
       getOptionLabel={(airline) => airline.name}
@@ -78,15 +82,15 @@ export const AirlineSelect = () => {
   );
 }
 
-export const AircraftRegistrationEntry = () => {
+export const AircraftRegistrationEntry = ({ required=false }) => {
     return (
-      <TextField style={{ width: "100%"}} id="aircraft-registration" name="aircraft-registration" label="Aircraft Registration" />
+      <TextField style={{ width: "100%"}} required={required} id="aircraft-registration" name="aircraft-registration" label="Aircraft Registration" />
     )
 }
 
-export const FlightNumberEntry = () => {
-    return (
-      <TextField style={{ width: "100%"}} id="flight-number" name="flight-number" label="Flight Number" />
+export const FlightNumberEntry = ({ required=false }) => {
+  return (
+      <TextField style={{ width: "100%"}} requried={required} id="flight-number" name="flight-number" label="Flight Number" />
     )
 }
 
@@ -101,7 +105,7 @@ export const SearchByLabel = ({ searchByRegistration, setSearchByRegistration })
   )
 }
 
-export const AircraftTypeSelect = () => {
+export const AircraftTypeSelect = ({ value, setValue }) => {
   const [aircraftTypes, setAircraftTypes] = useState([])
   const axiosPrivate = useAxiosPrivate()
 
@@ -127,7 +131,11 @@ export const AircraftTypeSelect = () => {
     <Autocomplete
       id="aircraft-type-select"
       name="aircraft-type-select"
+      value={value}
       disablePortal
+      onChange={(e, newValue) => {
+        setValue(newValue)
+      }}
       options={aircraftTypes}
       autoHighlight
       getOptionLabel={(aircraftType) => aircraftType.model}
@@ -152,7 +160,7 @@ export const AircraftTypeSelect = () => {
   );
 }
 
-export const AirportsSelect = ({ airportType }) => {
+export const AirportsSelect = ({ airportType, value, setValue }) => {
   const [airports, setAirports] = useState([])
   const axiosPrivate = useAxiosPrivate()
 
@@ -179,7 +187,11 @@ export const AirportsSelect = ({ airportType }) => {
       id={`${airportType}-airport-select`}
       name={`${airportType}-airport-select`}
       disablePortal
+      value={value}
       options={airports}
+      onChange={(e, newValue) => {
+        setValue(newValue)
+      }}
       autoHighlight
       getOptionLabel={(airport) => `${airport.name}`}
       renderOption={(props, airport) => (
@@ -217,6 +229,12 @@ export const AirportsSelect = ({ airportType }) => {
 export const FlightFormComponent = () => {
   const [date, setDate] = useState(dayjs().valueOf())
   const [expanded, setExpanded] = useState(false);
+
+  const [airlineSelect, setAirlineSelect] = useState(null)
+  const [arrivalAirportSelect, setArrivalAirportSelect] = useState(null)
+  const [departureAirportSelect, setDepartureAirportSelect] = useState(null)
+  const [aircraftTypeSelect, setAircraftTypeSelect] = useState(null)
+
   const [searchByRegistration, setSearchByRegistration] = useState(true)
 
   const handleExpandClick = () => {
@@ -227,14 +245,32 @@ export const FlightFormComponent = () => {
     event.preventDefault()
 
     const dataFromForm = new FormData(event.currentTarget)
+    const aircraftRegistration = dataFromForm.get("aircraft-registration")
+    const flightNumber = dataFromForm.get("flight-number")
 
-    console.log(dataFromForm.get(date));
+    if(searchByRegistration){
+      if(date !== null && flightNumber !== null && airlineSelect !== null && aircraftTypeSelect !== null && departureAirportSelect !== null && arrivalAirportSelect !== null){
+        console.log(`No need to call api. All fields present`);
+      }
+      else{
+        console.log("Call search by registration api");
+      }
+    }
+    else{
+      if(date !== null && aircraftRegistration !== null && airlineSelect !== null && aircraftTypeSelect !== null && departureAirportSelect !== null && arrivalAirportSelect !== null){
+        console.log(`No need to call api. All fields present`);
+      }
+      else{
+        console.log("Call search by flight number api");
+      }
+    }
+    console.log(date);
     console.log(dataFromForm.get("aircraft-registration"));
     console.log(dataFromForm.get("flight-number"));
-    console.log(dataFromForm.get("airline-select-text"));
-    console.log(dataFromForm.get("aircraft-type-select-text"));
-    console.log(dataFromForm.get("departure-airport-select-text"));
-    console.log(dataFromForm.get("arrival-airport-select-text"));
+    console.log(airlineSelect);
+    console.log(aircraftTypeSelect);
+    console.log(departureAirportSelect);
+    console.log(arrivalAirportSelect);
   }
 
   return (
@@ -248,9 +284,9 @@ export const FlightFormComponent = () => {
           <Grid item xs={6} md={8}>
             {
               searchByRegistration ? (
-                <AircraftRegistrationEntry />
+                <AircraftRegistrationEntry required />
               ) : (
-                <FlightNumberEntry />
+                <FlightNumberEntry required />
               )
             }
 
@@ -302,19 +338,19 @@ export const FlightFormComponent = () => {
                 }
               </Grid>
               <Grid item xs={12} md={4}>
-                <AirlineSelect  />
+                <AirlineSelect value={airlineSelect} setValue={setAirlineSelect} />
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <AircraftTypeSelect  />
+                <AircraftTypeSelect value={aircraftTypeSelect} setValue={setAircraftTypeSelect} />
               </Grid>
 
               <Grid item xs={6}>
-                <AirportsSelect airportType="departure"  />
+                <AirportsSelect airportType="departure" value={departureAirportSelect} setValue={setDepartureAirportSelect} />
               </Grid>
 
               <Grid item xs={6}>
-                <AirportsSelect airportType="arrival"  />
+                <AirportsSelect airportType="arrival" value={arrivalAirportSelect} setValue={setArrivalAirportSelect} />
               </Grid>
 
               <Grid item xs={12}>
