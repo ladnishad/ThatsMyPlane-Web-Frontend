@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
+import { BaseForFlightTabComponent } from "./flight/BaseForFlightTabComponent"
 import { BaseForUploadPostComponent } from "./upload/BaseForUploadPost"
 import { CenteredTextComponent } from "../components/CenteredTextComponent"
 
@@ -46,7 +47,7 @@ export const PostTabsComponent = () => {
         <Tab label="Spotting" {...a11yProps(2)} />
       </Tabs>
       <TabComponent value={value} index={0}>
-        <CenteredTextComponent text="Add flights to get memories with aircrafts" />
+        <BaseForFlightTabComponent />
       </TabComponent>
 
       <TabComponent value={value} index={1}>

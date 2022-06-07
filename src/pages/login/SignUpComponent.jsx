@@ -13,6 +13,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import axios from "../../api/axios"
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -29,13 +31,36 @@ function Copyright(props) {
 const theme = createTheme();
 
 export const SignUp = () => {
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
+      firstName: data.get('firstName'),
+      lastName: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
     });
+
+    try{
+      const firstName = data.get('firstName')
+      const lastName = data.get('lastName')
+      const email = data.get('email')
+      const password = data.get('password')
+
+      const reqBody = await JSON.stringify({ firstName, lastName, email, password })
+
+      const SignupResponse = await axios({
+        url: '/signup',
+        method: 'post',
+        data: reqBody,
+        headers: { 'Content-Type': 'application/json'}
+      })
+
+      console.log("Sign up successful")
+      console.log(SignupResponse);
+    } catch(e){
+      console.log(e);
+    }
   };
 
   return (
