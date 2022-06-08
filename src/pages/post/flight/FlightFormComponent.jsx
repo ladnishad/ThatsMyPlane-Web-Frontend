@@ -14,6 +14,7 @@ import SavedSearchIcon from '@mui/icons-material/SavedSearch';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Tooltip from '@mui/material/Tooltip';
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate"
+import useAuth from "../../../hooks/useAuth"
 import { DatePickerComponent } from "../../components/DatePicker"
 
 const ExpandMore = styled((props) => {
@@ -229,6 +230,8 @@ export const AirportsSelect = ({ airportType, value, setValue }) => {
 export const FlightFormComponent = () => {
   const [date, setDate] = useState(dayjs().valueOf())
   const [expanded, setExpanded] = useState(false);
+  const { auth } = useAuth()
+  const axiosPrivate = useAxiosPrivate()
 
   const [airlineSelect, setAirlineSelect] = useState(null)
   const [arrivalAirportSelect, setArrivalAirportSelect] = useState(null)
@@ -251,6 +254,31 @@ export const FlightFormComponent = () => {
     if(searchByRegistration){
       if(date !== null && flightNumber !== null && airlineSelect !== null && aircraftTypeSelect !== null && departureAirportSelect !== null && arrivalAirportSelect !== null){
         console.log(`No need to call api. All fields present`);
+        const reqBody = {
+          userId: auth.userId,
+          flightInformation: {
+            airlineIATA: airlineSelect.IATA,
+            airlineICAO: airlineSelect.ICAO,
+            aircraftRegistration,
+            aircraftType: aircraftTypeSelect.ICAO,
+            originICAO: departureAirportSelect.ICAO,
+            destinationICAO: arrivalAirportSelect.ICAO,
+            scheduledOut: date,
+            flightNumber
+          }
+        }
+
+        try{
+          const SavedFlight = await axiosPrivate({
+            url: "/flight/add",
+            method: "post",
+            data: reqBody
+          })
+
+          console.log("Successful");
+        } catch(e){
+          console.log(e);
+        }
       }
       else{
         console.log("Call search by registration api");
