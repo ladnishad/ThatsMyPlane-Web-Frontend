@@ -22,8 +22,8 @@ export const PrivateRoutes = [
     element: <BaseForHomePage /> ,
   },
   {
-    path: "discover",
-    element: <CenteredTextComponent text="Discover" /> ,
+    path: "aircrafts",
+    element: <CenteredTextComponent text="Aircrafts you've been on" /> ,
   },
   {
     path: "post",

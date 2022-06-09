@@ -3,7 +3,7 @@ import Paper from '@mui/material/Paper';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import HomeIcon from '@mui/icons-material/Home';
-import ExploreIcon from '@mui/icons-material/Explore';
+import ConnectingAirportsIcon from '@mui/icons-material/ConnectingAirports';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -22,8 +22,8 @@ export const BottomNavigationComponent = () => {
         navigate("/home")
         break
 
-      case "/discover":
-        navigate("/discover")
+      case "/aircrafts":
+        navigate("/aircrafts")
         break
 
       case "/post":
@@ -52,9 +52,9 @@ export const BottomNavigationComponent = () => {
         icon={<HomeIcon />}
       />
       <BottomNavigationAction
-        label="Discover"
-        value="/discover"
-        icon={<ExploreIcon />}
+        label="Aircrafts"
+        value="/aircrafts"
+        icon={<ConnectingAirportsIcon fontSize="large" />}
       />
       <BottomNavigationAction
         label="Post"
