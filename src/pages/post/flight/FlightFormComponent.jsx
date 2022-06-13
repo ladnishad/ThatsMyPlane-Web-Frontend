@@ -227,7 +227,7 @@ export const AirportsSelect = ({ airportType, value, setValue }) => {
   );
 }
 
-export const FlightFormComponent = () => {
+export const FlightFormComponent = ({ setRecommendedFlights }) => {
   const [date, setDate] = useState(dayjs().valueOf())
   const [expanded, setExpanded] = useState(false);
   const { auth } = useAuth()
@@ -282,6 +282,23 @@ export const FlightFormComponent = () => {
       }
       else{
         console.log("Call search by registration api");
+        try{
+          const SearchByRegistrationReq = await axiosPrivate({
+            url: "/search/flights/registration",
+            method: "post",
+            data: {
+              registrationNumber: aircraftRegistration,
+              flightDate: date
+            }
+          })
+
+          console.log(SearchByRegistrationReq.data);
+          setRecommendedFlights(SearchByRegistrationReq.data)
+        }
+
+        catch(e){
+          console.log(e);
+        }
       }
     }
     else{
