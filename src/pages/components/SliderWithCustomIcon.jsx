@@ -91,12 +91,12 @@ const MarkComponent = ({ action="takeOff", airport }) => {
 export const SliderWithCustomIcon = ({ value=0, originICAO, scheduledOut, destinationICAO, scheduledIn }) => {
   return (
     <Box sx={{ width: "100%" }}>
-      <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
+      <Stack spacing={1} direction="row" sx={{ mb: 1 }} alignItems="center">
         <MarkComponent action="takeOff" airport={originICAO} />
         <CustomSlider
           components={{ Thumb: CustomThumbComponent }}
           defaultValue={value}
-          sx={{ minWidth: "80%", ml: 2 }}
+          sx={{ minWidth: "80%" }}
           step={null}
           disabled
         />
