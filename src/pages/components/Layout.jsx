@@ -15,8 +15,9 @@ const AppStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(1),
-    height: "100%",
+    minHheight: "100vh",
     overflow: "auto",
+    marginBottom: 70
   },
 }))
 

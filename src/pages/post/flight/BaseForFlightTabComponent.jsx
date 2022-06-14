@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -68,29 +69,25 @@ export const BaseForFlightTabComponent = () => {
         "status": "Arrived / Gate Arrival",
         "progressPercent": 100
     }
-])
+  ])
 
   useEffect(() => {
     console.log(recommendedFlights);
   }, [recommendedFlights])
   return (
     <Grid container direction="column" spacing={1} xs={12}>
-      <Grid item xs={12}>
-        <Card xs={12}>
-          <CardContent>
-            <FlightFormComponent setRecommendedFlights={setRecommendedFlights} searchByRegistration={searchByRegistration} setSearchByRegistration={setSearchByRegistration} />
-          </CardContent>
-        </Card>
+        <Grid item xs={12}>
+          <Card>
+            <CardContent>
+              <FlightFormComponent setRecommendedFlights={setRecommendedFlights} searchByRegistration={searchByRegistration} setSearchByRegistration={setSearchByRegistration} />
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} sx={{ height: "100%"}}>
+          <RecommendedFlightsList flights={recommendedFlights} />
+        </Grid>
+
       </Grid>
-
-      {
-        recommendedFlights.length > 0 && (
-          <Grid item xs={12}>
-            <RecommendedFlightsList flights={recommendedFlights} />
-          </Grid>
-        )
-      }
-
-    </Grid>
   );
 }

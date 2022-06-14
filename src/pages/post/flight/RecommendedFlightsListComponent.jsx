@@ -3,15 +3,9 @@ import Grid from '@mui/material/Grid';
 import { RecommendedFlightCard } from "./RecommendedFlightCardComponent"
 
 export const RecommendedFlightsList = ({ flights }) => {
-  return (
-    <Grid container direction="column" spacing={3} xs={12}>
-      {
-        flights.map(( flight ) => (
-          <Grid item xs={12}>
-            <RecommendedFlightCard flight={flight} />
-          </Grid>
-        ))
-      }
-    </Grid>
-  )
+    return flights.map(( flight ) => (
+      <Grid item xs={12} sx={{ pt:1 }}>
+        <RecommendedFlightCard flight={flight} />
+      </Grid>
+    ))
 }

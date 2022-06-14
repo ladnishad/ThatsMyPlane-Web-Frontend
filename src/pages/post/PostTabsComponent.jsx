@@ -17,7 +17,7 @@ const TabComponent = ({ children, value, index, ...other }) => {
      {...other}
    >
      {value === index && (
-       <Box sx={{ p: 3 }}>
+       <Box>
          {children}
        </Box>
      )}
