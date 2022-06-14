@@ -9,6 +9,7 @@ import { FlightFormComponent } from "./FlightFormComponent"
 import { RecommendedFlightsList } from "./RecommendedFlightsListComponent"
 
 export const BaseForFlightTabComponent = () => {
+  const [searchByRegistration, setSearchByRegistration] = useState(true)
   // TODO: Remove the sample flights below after card ui fixed
   const [recommendedFlights, setRecommendedFlights] = useState([
     {
@@ -77,7 +78,7 @@ export const BaseForFlightTabComponent = () => {
       <Grid item xs={12}>
         <Card xs={12}>
           <CardContent>
-            <FlightFormComponent setRecommendedFlights={setRecommendedFlights} />
+            <FlightFormComponent setRecommendedFlights={setRecommendedFlights} searchByRegistration={searchByRegistration} setSearchByRegistration={setSearchByRegistration} />
           </CardContent>
         </Card>
       </Grid>

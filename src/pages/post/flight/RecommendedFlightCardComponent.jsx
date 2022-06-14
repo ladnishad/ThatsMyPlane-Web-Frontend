@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import dayjs from "dayjs"
+import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
 
+import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+import FlightLandIcon from '@mui/icons-material/FlightLand';
+
+import { RecommendedFlightCardMedia } from "./RecommendedFlightCardWithMediaComponent"
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate"
 
 export const RecommendedFlightCard = ({ flight }) => {
@@ -38,18 +45,59 @@ export const RecommendedFlightCard = ({ flight }) => {
     <Card sx={{ width: "100%" }}>
       <CardMedia
         component="img"
-        sx={{ width: "100%", height: 300 }}
+        sx={{ maxHeight: 350 }}
         image={aircraftImages.pop()?.aircraftPhotoURL}
         alt={aircraftImages.pop()?.aircraftPhotoTitle}
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {flight.aircraftRegistration}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
-        </Typography>
+        <Grid container direction="column" justifyContent="center" alignItems="flex-start" spacing={1}>
+          <Grid item container direction="row" justifyContent="space-between" alignItems="center">
+            <Grid item>
+              <Typography variant="h6" color="primary">{`${flight.airlineIATA} ${flight.flightNumber}`}</Typography>
+            </Grid>
+            <Grid item container direction='row' spacing={1}>
+              <Grid item>
+                <Chip label={flight.aircraftRegistration} color="primary" />
+              </Grid>
+              <Grid item>
+                <Chip label={flight.aircraftType} color="primary" variant="outlined" />
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="overline">{flight.status}</Typography>
+          </Grid>
+
+          <Grid item container direction="row" spacing={1}>
+            <Grid item>
+              <FlightTakeoffIcon />
+            </Grid>
+            <Grid item>
+              <Typography variant="subtitle2">{flight.originICAO}</Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="body2">{dayjs(flight.scheduledOut).format("MMMM DD YYYY")}</Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="body2">{`at ${dayjs(flight.scheduledOut).format("HH:mm")}`}</Typography>
+            </Grid>
+          </Grid>
+
+          <Grid item container direction="row" spacing={1}>
+            <Grid item>
+              <FlightLandIcon />
+            </Grid>
+            <Grid item>
+              <Typography variant="subtitle2">{flight.destinationICAO}</Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="body2">{dayjs(flight.scheduledIn).format("MMMM DD YYYY")}</Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="body2">{`at ${dayjs(flight.scheduledIn).format("HH:mm")}`}</Typography>
+            </Grid>
+          </Grid>
+        </Grid>
       </CardContent>
       <CardActions>
         <Button size="small">Share</Button>

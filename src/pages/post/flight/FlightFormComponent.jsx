@@ -227,7 +227,7 @@ export const AirportsSelect = ({ airportType, value, setValue }) => {
   );
 }
 
-export const FlightFormComponent = ({ setRecommendedFlights }) => {
+export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistration, setSearchByRegistration }) => {
   const [date, setDate] = useState(dayjs().valueOf())
   const [expanded, setExpanded] = useState(false);
   const { auth } = useAuth()
@@ -237,8 +237,6 @@ export const FlightFormComponent = ({ setRecommendedFlights }) => {
   const [arrivalAirportSelect, setArrivalAirportSelect] = useState(null)
   const [departureAirportSelect, setDepartureAirportSelect] = useState(null)
   const [aircraftTypeSelect, setAircraftTypeSelect] = useState(null)
-
-  const [searchByRegistration, setSearchByRegistration] = useState(true)
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
