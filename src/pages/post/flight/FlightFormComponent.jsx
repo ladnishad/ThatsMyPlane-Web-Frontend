@@ -83,15 +83,15 @@ export const AirlineSelect = ({ value, setValue }) => {
   );
 }
 
-export const AircraftRegistrationEntry = ({ required=false }) => {
+export const AircraftRegistrationEntry = ({ value, setAircraftRegistration, required=false }) => {
     return (
-      <TextField style={{ width: "100%"}} required={required} id="aircraft-registration" name="aircraft-registration" label="Aircraft Registration" />
+      <TextField style={{ width: "100%"}} value={value} onChange={(e) => setAircraftRegistration(e.target.value)} required={required} id="aircraft-registration" name="aircraft-registration" label="Aircraft Registration" />
     )
 }
 
-export const FlightNumberEntry = ({ required=false }) => {
+export const FlightNumberEntry = ({ value, setFlightNumber, required=false }) => {
   return (
-      <TextField style={{ width: "100%"}} requried={required} id="flight-number" name="flight-number" label="Flight Number" />
+      <TextField style={{ width: "100%"}} value={value} onChange={(e) => setFlightNumber(e.target.value)} requried={required} id="flight-number" name="flight-number" label="Flight Number" />
     )
 }
 
@@ -228,16 +228,25 @@ export const AirportsSelect = ({ airportType, value, setValue }) => {
 }
 
 export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistration, setSearchByRegistration }) => {
-  const [date, setDate] = useState(dayjs().valueOf())
   const [expanded, setExpanded] = useState(false);
+  const [allFieldsFilled, setAllFieldsFilled] = useState(false)
   const { auth } = useAuth()
   const axiosPrivate = useAxiosPrivate()
 
+  // Form states
+  const [aircraftRegistration, setAircraftRegistration] = useState("")
+  const [flightNumber, setFlightNumber] = useState("")
+  const [date, setDate] = useState(dayjs().valueOf())
   const [airlineSelect, setAirlineSelect] = useState(null)
   const [arrivalAirportSelect, setArrivalAirportSelect] = useState(null)
   const [departureAirportSelect, setDepartureAirportSelect] = useState(null)
   const [aircraftTypeSelect, setAircraftTypeSelect] = useState(null)
 
+  useEffect(() => {
+    if(aircraftRegistration !== null && flightNumber !== null && date !== null && airlineSelect !== null && arrivalAirportSelect !== null && departureAirportSelect !== null && aircraftTypeSelect!==null){
+      setAllFieldsFilled(true)
+    }
+  }, [aircraftRegistration, flightNumber, date, airlineSelect, arrivalAirportSelect, departureAirportSelect, aircraftTypeSelect])
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -245,42 +254,42 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
   const handleSubmit = async(event) => {
     event.preventDefault()
 
-    const dataFromForm = new FormData(event.currentTarget)
-    const aircraftRegistration = dataFromForm.get("aircraft-registration")
-    const flightNumber = dataFromForm.get("flight-number")
-
-    if(searchByRegistration){
-      if(date !== null && flightNumber !== null && airlineSelect !== null && aircraftTypeSelect !== null && departureAirportSelect !== null && arrivalAirportSelect !== null){
-        console.log(`No need to call api. All fields present`);
-        const reqBody = {
-          userId: auth.userId,
-          flightInformation: {
-            airlineIATA: airlineSelect.IATA,
-            airlineICAO: airlineSelect.ICAO,
-            aircraftRegistration,
-            aircraftType: aircraftTypeSelect.ICAO,
-            originICAO: departureAirportSelect.ICAO,
-            destinationICAO: arrivalAirportSelect.ICAO,
-            scheduledOut: date,
-            flightNumber
-          }
-        }
-
-        try{
-          const SavedFlight = await axiosPrivate({
-            url: "/flight/add",
-            method: "post",
-            data: reqBody
-          })
-
-          console.log("Successful");
-        } catch(e){
-          console.log(e);
-        }
+    if(allFieldsFilled){
+      console.log(`No need to call api. All fields present`);
+      const reqBody = {
+        userId: auth.userId,
+        flightInformation: {
+          airlineIATA: airlineSelect.IATA,
+          airlineICAO: airlineSelect.ICAO,
+          aircraftRegistration,
+          aircraftType: aircraftTypeSelect.ICAO,
+          originICAO: departureAirportSelect.ICAO,
+          destinationICAO: arrivalAirportSelect.ICAO,
+          scheduledOut: date,
+          flightNumber
+        },
+        fromApi: false
       }
-      else{
-        console.log("Call search by registration api");
+
+      try{
+        const SavedFlight = await axiosPrivate({
+          url: "/flight/add",
+          method: "post",
+          data: reqBody
+        })
+
+        console.log("Successful");
+      } catch(e){
+        console.log(e);
+      }
+    }
+    if(searchByRegistration){
+      console.log("Call search by registration api");
         try{
+          setRecommendedFlights({
+            isLoading: true,
+            data: []
+          })
           const SearchByRegistrationReq = await axiosPrivate({
             url: "/search/flights/registration",
             method: "post",
@@ -290,26 +299,46 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
             }
           })
 
-          console.log(SearchByRegistrationReq.data);
-          setRecommendedFlights(SearchByRegistrationReq.data)
+          setRecommendedFlights({
+            isLoading: false,
+            data: SearchByRegistrationReq.data
+          })
         }
 
         catch(e){
           console.log(e);
         }
-      }
     }
     else{
-      if(date !== null && aircraftRegistration !== null && airlineSelect !== null && aircraftTypeSelect !== null && departureAirportSelect !== null && arrivalAirportSelect !== null){
-        console.log(`No need to call api. All fields present`);
+      console.log("Call search by flight number api");
+
+      try{
+        setRecommendedFlights({
+          isLoading: true,
+          data: []
+        })
+        const SearchByFlightNumberReq = await axiosPrivate({
+          url: "/search/flights/flightNumber",
+          method: "post",
+          data: {
+            flightNumber,
+            flightDate: date
+          }
+        })
+
+        setRecommendedFlights({
+          isLoading: false,
+          data: SearchByFlightNumberReq.data
+        })
       }
-      else{
-        console.log("Call search by flight number api");
+
+      catch(e){
+        console.log(e);
       }
     }
     console.log(date);
-    console.log(dataFromForm.get("aircraft-registration"));
-    console.log(dataFromForm.get("flight-number"));
+    console.log(aircraftRegistration);
+    console.log(flightNumber);
     console.log(airlineSelect);
     console.log(aircraftTypeSelect);
     console.log(departureAirportSelect);
@@ -327,9 +356,9 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
           <Grid item xs={6} md={8}>
             {
               searchByRegistration ? (
-                <AircraftRegistrationEntry required />
+                <AircraftRegistrationEntry value={aircraftRegistration} setAircraftRegistration={setAircraftRegistration} required />
               ) : (
-                <FlightNumberEntry required />
+                <FlightNumberEntry value={flightNumber} setFlightNumber={setFlightNumber} required />
               )
             }
 
@@ -348,7 +377,7 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Add flight
+                Search flight
               </Button>
             )
           }
@@ -374,9 +403,9 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
               <Grid item xs={12} md={4}>
                 {
                   searchByRegistration ? (
-                    <FlightNumberEntry />
+                    <FlightNumberEntry value={flightNumber} setFlightNumber={setFlightNumber}/>
                   ) : (
-                    <AircraftRegistrationEntry />
+                    <AircraftRegistrationEntry value={aircraftRegistration} setAircraftRegistration={setAircraftRegistration} />
                   )
                 }
               </Grid>
@@ -405,7 +434,7 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
                       variant="contained"
                       sx={{ mt: 3, mb: 2 }}
                     >
-                      Add flight
+                      { allFieldsFilled ? "Add Flight" : "Search flight"}
                     </Button>
                   )
                 }

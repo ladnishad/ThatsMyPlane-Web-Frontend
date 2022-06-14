@@ -48,6 +48,7 @@ export const RecommendedFlightCard = ({ flight }) => {
   return (
     <Card
       sx={{ height: 550}}
+      className="animate__animated animate__fadeInUp"
     >
       <CardMedia
         component="img"
