@@ -12,6 +12,7 @@ import Chip from '@mui/material/Chip';
 
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import FlightLandIcon from '@mui/icons-material/FlightLand';
+import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 
 import { RecommendedFlightCardMedia } from "./RecommendedFlightCardWithMediaComponent"
 import { SliderWithCustomIcon } from "../../components/SliderWithCustomIcon"
@@ -19,7 +20,7 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate"
 
 dayjs.extend(relativeTime)
 
-export const RecommendedFlightCard = ({ identifier, flight, selectedFlight, setSelectedFlight }) => {
+export const RecommendedFlightCard = ({ identifier, setOpenConfirmAddFlightDialog, flight, selectedFlight, setSelectedFlight }) => {
   const axiosPrivate = useAxiosPrivate()
   const [aircraftImages, setAircraftImages] = useState([])
 
@@ -49,7 +50,7 @@ export const RecommendedFlightCard = ({ identifier, flight, selectedFlight, setS
     <Card
       sx={{ height: 550}}
       className="animate__animated animate__fadeInUp"
-      onClick={() => setSelectedFlight({ identifier, ...flight })}
+      // onClick={() => setSelectedFlight({ identifier, ...flight })}
     >
       <CardMedia
         component="img"
@@ -57,8 +58,8 @@ export const RecommendedFlightCard = ({ identifier, flight, selectedFlight, setS
         image={aircraftImages.pop()?.aircraftPhotoURL}
         alt={aircraftImages.pop()?.aircraftPhotoTitle}
       />
-    <CardContent sx={selectedFlight?.identifier === identifier ? { height: "60%", backgroundColor: "#e6e6e6" } : { height: "60%" }}>
-        <Grid container direction="column" justifyContent="center" alignItems="flex-start" spacing={1}>
+    <CardContent sx={{ height: "50%" }}>
+      <Grid container direction="column" justifyContent="center" alignItems="flex-start" spacing={1}>
           <Grid item container direction="row" justifyContent="space-between" alignItems="center">
             <Grid item>
               <Typography variant="h6" color="primary">{`${flight.airlineIATA} ${flight.flightNumber}`}</Typography>
@@ -105,6 +106,19 @@ export const RecommendedFlightCard = ({ identifier, flight, selectedFlight, setS
           </Grid>
         </Grid>
       </CardContent>
+      <CardActions sx={{ height: "10%"}}>
+        <Button
+            size="large"
+            sx={{ width: "100%", height: "100%", "&:hover": { backgroundColor: "primary" }}}
+            startIcon={<AirplaneTicketIcon fontSize="large"/>}
+            onClick={() => {
+                setSelectedFlight({ identifier, ...flight })
+                setOpenConfirmAddFlightDialog(true)
+            }}
+        >
+        Add
+      </Button>
+      </CardActions>
     </Card>
   );
 }

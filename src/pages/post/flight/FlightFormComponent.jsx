@@ -227,7 +227,7 @@ export const AirportsSelect = ({ airportType, value, setValue }) => {
   );
 }
 
-export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistration, setSearchByRegistration }) => {
+export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistration, setSearchByRegistration, selectedFlight }) => {
   const [expanded, setExpanded] = useState(false);
   const [allFieldsFilled, setAllFieldsFilled] = useState(false)
   const { auth } = useAuth()
@@ -377,7 +377,7 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Search flight
+                { allFieldsFilled ? "Add Flight" : "Search flight" }
               </Button>
             )
           }
@@ -434,7 +434,7 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
                       variant="contained"
                       sx={{ mt: 3, mb: 2 }}
                     >
-                      { allFieldsFilled ? "Add Flight" : "Search flight"}
+                      { allFieldsFilled ? "Add Flight" : "Search flight" }
                     </Button>
                   )
                 }

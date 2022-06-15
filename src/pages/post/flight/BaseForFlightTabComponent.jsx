@@ -10,10 +10,17 @@ import { FlightFormComponent } from "./FlightFormComponent"
 import { CenteredLoadingComponent } from "../../components/CenteredLoadingComponent"
 import { CenteredTextComponent } from "../../components/CenteredTextComponent"
 import { RecommendedFlightsList } from "./RecommendedFlightsListComponent"
+import { ConfirmDialogComponent } from "../../components/ConfirmDialogComponent"
 
 export const BaseForFlightTabComponent = () => {
   const [searchByRegistration, setSearchByRegistration] = useState(true)
   const [selectedFlight, setSelectedFlight] = useState({})
+  const [openConfirmAddFlightDialog, setOpenConfirmAddFlightDialog] = useState(false)
+
+  const handleAddFlight = () => {
+    console.log(`${selectedFlight.aircraftRegistration} will be added`);
+    setOpenConfirmAddFlightDialog(false)
+  }
 
   useEffect(() => {
     console.log(selectedFlight);
@@ -21,67 +28,11 @@ export const BaseForFlightTabComponent = () => {
   // TODO: Remove the sample flights below if any after card ui fixed
   const [recommendedFlights, setRecommendedFlights] = useState({
     isLoading: false,
-    data: [
-      {
-          "flightNumber": "1525",
-          "flightDate": 1655172600000,
-          "airlineICAO": "AAL",
-          "airlineIATA": "AA",
-          "aircraftRegistration": "N162UW",
-          "aircraftType": "A321",
-          "scheduledOut": "2022-06-14T02:10:00Z",
-          "scheduledIn": "2022-06-14T03:46:00Z",
-          "originICAO": "KDFW",
-          "destinationICAO": "KELP",
-          "status": "Scheduled",
-          "progressPercent": 0
-      },
-      {
-          "flightNumber": "1443",
-          "flightDate": 1655158620000,
-          "airlineICAO": "AAL",
-          "airlineIATA": "AA",
-          "aircraftRegistration": "N162UW",
-          "aircraftType": "A321",
-          "scheduledOut": "2022-06-13T22:17:00Z",
-          "scheduledIn": null,
-          "originICAO": "KCMH",
-          "destinationICAO": "KDFW",
-          "status": "Scheduled",
-          "progressPercent": 0
-      },
-      {
-          "flightNumber": "2337",
-          "flightDate": 1655146740000,
-          "airlineICAO": "AAL",
-          "airlineIATA": "AA",
-          "aircraftRegistration": "N162UW",
-          "aircraftType": "A321",
-          "scheduledOut": "2022-06-13T18:59:00Z",
-          "scheduledIn": "2022-06-13T21:25:00Z",
-          "originICAO": "KDFW",
-          "destinationICAO": "KCMH",
-          "status": "Arrived / Gate Arrival",
-          "progressPercent": 100
-      },
-      {
-          "flightNumber": "1221",
-          "flightDate": 1655130900000,
-          "airlineICAO": "AAL",
-          "airlineIATA": "AA",
-          "aircraftRegistration": "N162UW",
-          "aircraftType": "A321",
-          "scheduledOut": "2022-06-13T14:35:00Z",
-          "scheduledIn": "2022-06-13T17:55:00Z",
-          "originICAO": "KSMF",
-          "destinationICAO": "KDFW",
-          "status": "Arrived / Gate Arrival",
-          "progressPercent": 100
-      }
-    ]
+    data: []
   })
 
   return (
+    <>
     <Grid container direction="column" spacing={1} xs={12}>
         <Grid item xs={12} className="animate__animated animate__fadeIn animate__faster" >
           <Card>
@@ -100,7 +51,7 @@ export const BaseForFlightTabComponent = () => {
           recommendedFlights.data.length > 0 ?
           (
             <Grid item xs={12} sx={{ height: "100%"}}>
-              <RecommendedFlightsList flights={recommendedFlights.data} selectedFlight={selectedFlight} setSelectedFlight={setSelectedFlight} />
+              <RecommendedFlightsList setOpenConfirmAddFlightDialog={setOpenConfirmAddFlightDialog} flights={recommendedFlights.data} selectedFlight={selectedFlight} setSelectedFlight={setSelectedFlight} />
             </Grid>
           ) :
           (
@@ -110,5 +61,7 @@ export const BaseForFlightTabComponent = () => {
           )
         }
       </Grid>
+      <ConfirmDialogComponent open={openConfirmAddFlightDialog} setOpen={setOpenConfirmAddFlightDialog} title="Confirm add aircraft" message={`Are you sure you want to add ${selectedFlight.aircraftRegistration} to your collection?`} handleConfirm={handleAddFlight}/>
+      </>
   );
 }
