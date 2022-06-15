@@ -13,6 +13,11 @@ import { RecommendedFlightsList } from "./RecommendedFlightsListComponent"
 
 export const BaseForFlightTabComponent = () => {
   const [searchByRegistration, setSearchByRegistration] = useState(true)
+  const [selectedFlight, setSelectedFlight] = useState({})
+
+  useEffect(() => {
+    console.log(selectedFlight);
+  }, [selectedFlight])
   // TODO: Remove the sample flights below if any after card ui fixed
   const [recommendedFlights, setRecommendedFlights] = useState({
     isLoading: false,
@@ -81,7 +86,7 @@ export const BaseForFlightTabComponent = () => {
         <Grid item xs={12} className="animate__animated animate__fadeIn animate__faster" >
           <Card>
             <CardContent>
-              <FlightFormComponent setRecommendedFlights={setRecommendedFlights} searchByRegistration={searchByRegistration} setSearchByRegistration={setSearchByRegistration} />
+              <FlightFormComponent setRecommendedFlights={setRecommendedFlights} searchByRegistration={searchByRegistration} setSearchByRegistration={setSearchByRegistration} selectedFlight={selectedFlight} />
             </CardContent>
           </Card>
         </Grid>
@@ -95,7 +100,7 @@ export const BaseForFlightTabComponent = () => {
           recommendedFlights.data.length > 0 ?
           (
             <Grid item xs={12} sx={{ height: "100%"}}>
-              <RecommendedFlightsList flights={recommendedFlights.data} />
+              <RecommendedFlightsList flights={recommendedFlights.data} selectedFlight={selectedFlight} setSelectedFlight={setSelectedFlight} />
             </Grid>
           ) :
           (

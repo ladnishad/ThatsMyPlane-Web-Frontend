@@ -19,7 +19,7 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate"
 
 dayjs.extend(relativeTime)
 
-export const RecommendedFlightCard = ({ flight }) => {
+export const RecommendedFlightCard = ({ identifier, flight, selectedFlight, setSelectedFlight }) => {
   const axiosPrivate = useAxiosPrivate()
   const [aircraftImages, setAircraftImages] = useState([])
 
@@ -43,12 +43,13 @@ export const RecommendedFlightCard = ({ flight }) => {
     }
 
     getAircraftImages()
-  }, [])
+  }, [selectedFlight])
 
   return (
     <Card
       sx={{ height: 550}}
       className="animate__animated animate__fadeInUp"
+      onClick={() => setSelectedFlight({ identifier, ...flight })}
     >
       <CardMedia
         component="img"
@@ -56,7 +57,7 @@ export const RecommendedFlightCard = ({ flight }) => {
         image={aircraftImages.pop()?.aircraftPhotoURL}
         alt={aircraftImages.pop()?.aircraftPhotoTitle}
       />
-      <CardContent sx={{ height: "50%"}}>
+    <CardContent sx={selectedFlight?.identifier === identifier ? { height: "60%", backgroundColor: "#e6e6e6" } : { height: "60%" }}>
         <Grid container direction="column" justifyContent="center" alignItems="flex-start" spacing={1}>
           <Grid item container direction="row" justifyContent="space-between" alignItems="center">
             <Grid item>
@@ -104,10 +105,6 @@ export const RecommendedFlightCard = ({ flight }) => {
           </Grid>
         </Grid>
       </CardContent>
-      <CardActions sx={{ height: "10%"}}>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
-      </CardActions>
     </Card>
   );
 }
