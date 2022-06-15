@@ -5,6 +5,10 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import dayjs from "dayjs"
+
+import useAuth from "../../../hooks/useAuth"
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate"
 
 import { FlightFormComponent } from "./FlightFormComponent"
 import { CenteredLoadingComponent } from "../../components/CenteredLoadingComponent"
@@ -13,18 +17,47 @@ import { RecommendedFlightsList } from "./RecommendedFlightsListComponent"
 import { ConfirmDialogComponent } from "../../components/ConfirmDialogComponent"
 
 export const BaseForFlightTabComponent = () => {
+  const { auth } = useAuth()
+  const axiosPrivate = useAxiosPrivate()
+
   const [searchByRegistration, setSearchByRegistration] = useState(true)
   const [selectedFlight, setSelectedFlight] = useState({})
   const [openConfirmAddFlightDialog, setOpenConfirmAddFlightDialog] = useState(false)
 
-  const handleAddFlight = () => {
-    console.log(`${selectedFlight.aircraftRegistration} will be added`);
-    setOpenConfirmAddFlightDialog(false)
+  const handleAddFlight = async() => {
+    const { airlineIATA, airlineICAO, aircraftRegistration, aircraftType, originICAO, destinationICAO, scheduledOut, flightDate, flightNumber } = selectedFlight
+
+    const reqBody = {
+      userId: auth?.userId,
+      flightInformation: {
+        airlineIATA,
+        airlineICAO,
+        aircraftRegistration,
+        aircraftType,
+        originICAO,
+        destinationICAO,
+        scheduledOut: dayjs(scheduledOut).valueOf(),
+        flightNumber,
+      },
+      fromApi: true
+    }
+
+    // TODO: Send error as response with err codes instead of 200
+    try{
+      const SavedFlight = await axiosPrivate({
+        url: "/flight/add",
+        method: "post",
+        data: reqBody
+      })
+
+      setSelectedFlight({})
+      setOpenConfirmAddFlightDialog(false)
+    } catch(e){
+      console.log(e);
+      setOpenConfirmAddFlightDialog(false)
+    }
   }
 
-  useEffect(() => {
-    console.log(selectedFlight);
-  }, [selectedFlight])
   // TODO: Remove the sample flights below if any after card ui fixed
   const [recommendedFlights, setRecommendedFlights] = useState({
     isLoading: false,
