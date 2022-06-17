@@ -20,7 +20,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export const ConfirmDialogWithMediaComponent = ({ open, setOpen, title, message, flight, handleConfirm, visibility, setVisibility }) => {
+export const ConfirmDialogWithMediaComponent = ({ open, setOpen, title, message, flight, handleConfirm, visibility, setVisibility, caption, setCaption }) => {
   const axiosPrivate = useAxiosPrivate()
   const [aircraftImages, setAircraftImages] = useState([])
 
@@ -97,7 +97,7 @@ export const ConfirmDialogWithMediaComponent = ({ open, setOpen, title, message,
                   </Grid>
 
                   <Grid item xs={12} md={9}>
-                    <TextField id="caption-text" label="Caption" placeholder="Write something.." variant="outlined" xs={12} fullWidth />
+                    <TextField id="caption-text" label="Caption" placeholder="Write something.." value={caption} onChange={(e) => setCaption(e.target.value)} variant="outlined" xs={12} fullWidth />
                   </Grid>
 
                 </Grid>
