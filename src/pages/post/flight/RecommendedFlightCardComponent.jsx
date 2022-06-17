@@ -50,7 +50,6 @@ export const RecommendedFlightCard = ({ identifier, setOpenConfirmAddFlightDialo
     <Card
       sx={{ height: 550}}
       className="animate__animated animate__fadeInUp"
-      // onClick={() => setSelectedFlight({ identifier, ...flight })}
     >
       <CardMedia
         component="img"

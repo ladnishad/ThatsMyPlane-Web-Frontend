@@ -11,6 +11,7 @@ import { CenteredLoadingComponent } from "../../components/CenteredLoadingCompon
 import { CenteredTextComponent } from "../../components/CenteredTextComponent"
 import { RecommendedFlightsList } from "./RecommendedFlightsListComponent"
 import { ConfirmDialogComponent } from "../../components/ConfirmDialogComponent"
+import { ConfirmDialogWithMediaComponent } from "./ConfirmDialogWithMedia"
 
 export const BaseForFlightTabComponent = () => {
   const [searchByRegistration, setSearchByRegistration] = useState(true)
@@ -28,7 +29,34 @@ export const BaseForFlightTabComponent = () => {
   // TODO: Remove the sample flights below if any after card ui fixed
   const [recommendedFlights, setRecommendedFlights] = useState({
     isLoading: false,
-    data: []
+    data: [{
+          "flightNumber": "1525",
+          "flightDate": 1655172600000,
+          "airlineICAO": "AAL",
+          "airlineIATA": "AA",
+          "aircraftRegistration": "N162UW",
+          "aircraftType": "A321",
+          "scheduledOut": "2022-06-14T02:10:00Z",
+          "scheduledIn": "2022-06-14T03:46:00Z",
+          "originICAO": "KDFW",
+          "destinationICAO": "KELP",
+          "status": "Scheduled",
+          "progressPercent": 0
+      },
+      {
+          "flightNumber": "1443",
+          "flightDate": 1655158620000,
+          "airlineICAO": "AAL",
+          "airlineIATA": "AA",
+          "aircraftRegistration": "N162UW",
+          "aircraftType": "A321",
+          "scheduledOut": "2022-06-13T22:17:00Z",
+          "scheduledIn": null,
+          "originICAO": "KCMH",
+          "destinationICAO": "KDFW",
+          "status": "Scheduled",
+          "progressPercent": 0
+      }]
   })
 
   return (
@@ -61,7 +89,11 @@ export const BaseForFlightTabComponent = () => {
           )
         }
       </Grid>
-      <ConfirmDialogComponent open={openConfirmAddFlightDialog} setOpen={setOpenConfirmAddFlightDialog} title="Confirm add aircraft" message={`Are you sure you want to add ${selectedFlight.aircraftRegistration} to your collection?`} handleConfirm={handleAddFlight}/>
+      {
+        openConfirmAddFlightDialog && (
+            <ConfirmDialogWithMediaComponent open={openConfirmAddFlightDialog} flight={selectedFlight} setOpen={setOpenConfirmAddFlightDialog} title="Confirm add aircraft" message="Review visibility and add a caption" handleConfirm={handleAddFlight}/>
+        )
+      }
       </>
   );
 }
