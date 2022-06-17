@@ -23,6 +23,7 @@ export const BaseForFlightTabComponent = () => {
 
   const [searchByRegistration, setSearchByRegistration] = useState(true)
   const [selectedFlight, setSelectedFlight] = useState({})
+  const [visibility, setVisibility] = useState("Private")
   const [openConfirmAddFlightDialog, setOpenConfirmAddFlightDialog] = useState(false)
 
   const handleAddFlight = async() => {
@@ -124,7 +125,7 @@ export const BaseForFlightTabComponent = () => {
       </Grid>
       {
         openConfirmAddFlightDialog && (
-            <ConfirmDialogWithMediaComponent open={openConfirmAddFlightDialog} flight={selectedFlight} setOpen={setOpenConfirmAddFlightDialog} title="Confirm add aircraft" message="Review visibility and add a caption" handleConfirm={handleAddFlight}/>
+            <ConfirmDialogWithMediaComponent open={openConfirmAddFlightDialog} flight={selectedFlight} setOpen={setOpenConfirmAddFlightDialog} title="Confirm add aircraft" message="Review visibility and add a caption" handleConfirm={handleAddFlight} visibility={visibility} setVisibility={setVisibility} />
         )
       }
       </>

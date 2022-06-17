@@ -5,6 +5,7 @@ import Grid from '@mui/material/Grid';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
+import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -13,12 +14,13 @@ import Chip from '@mui/material/Chip';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate"
+import { VisibilitySelectorComponent } from "../../components/VisibilitySelector"
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export const ConfirmDialogWithMediaComponent = ({ open, setOpen, title, message, flight, handleConfirm }) => {
+export const ConfirmDialogWithMediaComponent = ({ open, setOpen, title, message, flight, handleConfirm, visibility, setVisibility }) => {
   const axiosPrivate = useAxiosPrivate()
   const [aircraftImages, setAircraftImages] = useState([])
 
@@ -42,7 +44,7 @@ export const ConfirmDialogWithMediaComponent = ({ open, setOpen, title, message,
     }
 
     getAircraftImages()
-  }, [flight])
+  }, [flight, visibility])
 
   const handleClose = () => {
     setOpen(false);
@@ -65,7 +67,7 @@ export const ConfirmDialogWithMediaComponent = ({ open, setOpen, title, message,
           </DialogContentText>
 
           <Card
-            sx={{ height: 400, border:"none", boxShadow: "none" }}
+            sx={{ height: 400, minWidth: "100%", border:"none", boxShadow: "none" }}
           >
             <CardMedia
               component="img"
@@ -74,8 +76,8 @@ export const ConfirmDialogWithMediaComponent = ({ open, setOpen, title, message,
               alt={aircraftImages.pop()?.aircraftPhotoTitle}
             />
           <CardContent sx={{ height: "60%" }}>
-            <Grid container direction="column" justifyContent="center" alignItems="flex-start" spacing={1}>
-                <Grid item container direction="row" justifyContent="space-between" alignItems="center">
+            <Grid container xs={12} direction="column" justifyContent="center" alignItems="flex-start" spacing={2}>
+                <Grid item container xs={12} direction="row" justifyContent="space-between" alignItems="center">
                   <Grid item>
                     <Typography variant="h6" color="primary">{`${flight.airlineIATA} ${flight.flightNumber}`}</Typography>
                   </Grid>
@@ -88,8 +90,16 @@ export const ConfirmDialogWithMediaComponent = ({ open, setOpen, title, message,
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item xs={12}
-                  <TextField id="caption-text" label="Caption" variant="outlined" />
+
+                <Grid item container xs={12} spacing={3} direction="row" justifyContent="space-between" alignItems="center">
+                  <Grid item xs={12} md={3}>
+                    <VisibilitySelectorComponent visibility={visibility} setVisibility={setVisibility} />
+                  </Grid>
+
+                  <Grid item xs={12} md={9}>
+                    <TextField id="caption-text" label="Caption" placeholder="Write something.." variant="outlined" xs={12} fullWidth />
+                  </Grid>
+
                 </Grid>
               </Grid>
             </CardContent>
