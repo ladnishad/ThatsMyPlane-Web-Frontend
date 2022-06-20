@@ -66,34 +66,7 @@ export const BaseForFlightTabComponent = () => {
   // TODO: Remove the sample flights below if any after card ui fixed
   const [recommendedFlights, setRecommendedFlights] = useState({
     isLoading: false,
-    data: [{
-          "flightNumber": "1525",
-          "flightDate": 1655172600000,
-          "airlineICAO": "AAL",
-          "airlineIATA": "AA",
-          "aircraftRegistration": "N162UW",
-          "aircraftType": "A321",
-          "scheduledOut": "2022-06-14T02:10:00Z",
-          "scheduledIn": "2022-06-14T03:46:00Z",
-          "originICAO": "KDFW",
-          "destinationICAO": "KELP",
-          "status": "Scheduled",
-          "progressPercent": 0
-      },
-      {
-          "flightNumber": "1443",
-          "flightDate": 1655158620000,
-          "airlineICAO": "AAL",
-          "airlineIATA": "AA",
-          "aircraftRegistration": "N162UW",
-          "aircraftType": "A321",
-          "scheduledOut": "2022-06-13T22:17:00Z",
-          "scheduledIn": null,
-          "originICAO": "KCMH",
-          "destinationICAO": "KDFW",
-          "status": "Scheduled",
-          "progressPercent": 0
-      }]
+    data: []
   })
 
   return (

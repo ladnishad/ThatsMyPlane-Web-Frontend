@@ -2,6 +2,7 @@ import { SignIn } from "./pages/login/LoginComponent"
 import { SignUp } from "./pages/login/SignUpComponent"
 import { CenteredTextComponent } from "./pages/components/CenteredTextComponent"
 import { BaseForHomePage } from "./pages/homePage/BaseForHomePage"
+import { BaseForUserAircraftsComponent } from "./pages/userAircrafts/BaseForUserAircrafts"
 import { BaseForPostPage } from "./pages/post/BaseForPostPage"
 import { BaseForAccountPage } from "./pages/account/BaseComponent"
 
@@ -23,7 +24,7 @@ export const PrivateRoutes = [
   },
   {
     path: "aircrafts",
-    element: <CenteredTextComponent text="Aircrafts you've been on" /> ,
+    element: <BaseForUserAircraftsComponent /> ,
   },
   {
     path: "post",
