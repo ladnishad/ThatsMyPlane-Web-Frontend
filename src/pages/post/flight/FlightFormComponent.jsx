@@ -16,6 +16,7 @@ import Tooltip from '@mui/material/Tooltip';
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate"
 import useAuth from "../../../hooks/useAuth"
 import { DatePickerComponent } from "../../components/DatePicker"
+import { AlertFeedbackComponent } from "../../components/AlertFeedbackComponent"
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -230,6 +231,8 @@ export const AirportsSelect = ({ airportType, value, setValue }) => {
 export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistration, setSearchByRegistration, selectedFlight }) => {
   const [expanded, setExpanded] = useState(false);
   const [allFieldsFilled, setAllFieldsFilled] = useState(false)
+  const [requiredFieldsFilled, setRequiredFieldsFilled] = useState(false)
+  const [searchedNoResult, setSearchedNoResult] = useState(false)
   const { auth } = useAuth()
   const axiosPrivate = useAxiosPrivate()
 
@@ -242,19 +245,34 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
   const [departureAirportSelect, setDepartureAirportSelect] = useState(null)
   const [aircraftTypeSelect, setAircraftTypeSelect] = useState(null)
 
+  // Feedback state
+  const [notify, setNotify] = useState({
+    message: "",
+    type: "",
+    open: false
+  })
+
   useEffect(() => {
-    if(aircraftRegistration !== null && flightNumber !== null && date !== null && airlineSelect !== null && arrivalAirportSelect !== null && departureAirportSelect !== null && aircraftTypeSelect!==null){
+    if(date !== null && (aircraftRegistration !== "" || flightNumber !== "")){
+      setRequiredFieldsFilled(true)
+    }
+    else if(requiredFieldsFilled && airlineSelect !== null && arrivalAirportSelect !== null && departureAirportSelect !== null && aircraftTypeSelect!==null){
       setAllFieldsFilled(true)
     }
+    else{
+      setRequiredFieldsFilled(false)
+      setAllFieldsFilled(false)
+    }
   }, [aircraftRegistration, flightNumber, date, airlineSelect, arrivalAirportSelect, departureAirportSelect, aircraftTypeSelect])
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   const handleSubmit = async(event) => {
     event.preventDefault()
-
-    if(allFieldsFilled){
+    console.log(searchedNoResult);
+    if(allFieldsFilled || searchedNoResult){
       console.log(`No need to call api. All fields present`);
       const reqBody = {
         userId: auth.userId,
@@ -278,7 +296,11 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
           data: reqBody
         })
 
-        console.log("Successful");
+        setNotify({
+          message: "Successfully added flight.",
+          type: "success",
+          open: true
+        })
       } catch(e){
         console.log(e);
       }
@@ -299,10 +321,26 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
             }
           })
 
-          setRecommendedFlights({
-            isLoading: false,
-            data: SearchByRegistrationReq.data
-          })
+          if(SearchByRegistrationReq.data.length){
+            setRecommendedFlights({
+              isLoading: false,
+              data: SearchByRegistrationReq.data
+            })
+          }
+          else{
+            setRecommendedFlights({
+              isLoading: false,
+              data: []
+            })
+
+            setNotify({
+              message: "No flights found. Please add manually.",
+              type: "warning",
+              open: true
+            })
+
+            setSearchedNoResult(true)
+          }
         }
 
         catch(e){
@@ -326,10 +364,26 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
           }
         })
 
-        setRecommendedFlights({
-          isLoading: false,
-          data: SearchByFlightNumberReq.data
-        })
+        if(SearchByFlightNumberReq.data.length){
+          setRecommendedFlights({
+            isLoading: false,
+            data: SearchByFlightNumberReq.data
+          })
+        }
+        else{
+          setRecommendedFlights({
+            isLoading: false,
+            data: []
+          })
+
+          setNotify({
+            message: "No flights found. Please add manually.",
+            type: "warning",
+            open: true
+          })
+
+          setSearchedNoResult(true)
+        }
       }
 
       catch(e){
@@ -370,10 +424,11 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
         </Grid>
         <Grid item>
           {
-            expanded === false && (
+            searchedNoResult === false && (
               <Button
                 type="submit"
                 fullWidth
+                disabled={requiredFieldsFilled === false}
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
@@ -385,9 +440,9 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
         <Grid item>
           <Divider>
               <ExpandMore
-                expand={expanded}
+                expand={searchedNoResult}
                 onClick={handleExpandClick}
-                aria-expanded={expanded}
+                aria-expanded={searchedNoResult}
                 aria-label="show more"
               >
                 <Tooltip title="Additional information" placement="bottom">
@@ -398,7 +453,7 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
         </Grid>
 
         <Grid item>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <Collapse in={searchedNoResult} timeout="auto" unmountOnExit>
             <Grid container spacing={1}>
               <Grid item xs={12} md={4}>
                 {
@@ -427,14 +482,15 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
 
               <Grid item xs={12}>
                 {
-                  expanded && (
+                  searchedNoResult && (
                     <Button
                       type="submit"
                       fullWidth
+                      disabled={requiredFieldsFilled === false}
                       variant="contained"
                       sx={{ mt: 3, mb: 2 }}
                     >
-                      { allFieldsFilled ? "Add Flight" : "Search flight" }
+                      Add Flight
                     </Button>
                   )
                 }
@@ -443,6 +499,7 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
           </Collapse>
         </Grid>
       </Grid>
+      <AlertFeedbackComponent alert={notify} setAlert={setNotify} />
     </Box>
   )
 }
