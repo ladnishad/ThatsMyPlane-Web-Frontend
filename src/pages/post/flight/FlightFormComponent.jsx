@@ -163,26 +163,39 @@ export const AircraftTypeSelect = ({ value, setValue }) => {
 }
 
 export const AirportsSelect = ({ airportType, value, setValue }) => {
+  const [textFieldValue, setTextFieldValue] = useState("")
   const [airports, setAirports] = useState([])
   const axiosPrivate = useAxiosPrivate()
 
   useEffect(() => {
     const getAirports = async() => {
       try {
-        const airportsResponse = await axiosPrivate({
-          url: "/airports",
-          method: 'get'
-        })
-        const airportsList = airportsResponse.data
+        const reqBody = {
+          searchParam: textFieldValue
+        }
 
-        setAirports(airportsList)
-        return airportsList
+        if(textFieldValue.length > 2){
+          console.log("Called api");
+          const airportsResponse = await axiosPrivate({
+            url: "/search/airports",
+            method: 'post',
+            data: reqBody
+          })
+          const airportsList = airportsResponse.data
+
+          if(airportsList.length){
+            setAirports(airportsList)
+          }
+          return airportsList
+        }
+        setAirports([])
+        return []
       } catch(e){
         console.log(e);
       }
     }
     getAirports()
-  }, [])
+  }, [textFieldValue])
 
   return (
     <Autocomplete
@@ -216,12 +229,13 @@ export const AirportsSelect = ({ airportType, value, setValue }) => {
         <TextField
           {...params}
           label={`Choose ${airportType} airport`}
-          id={`${airportType}-airport-select-text`}
           name={`${airportType}-airport-select-text`}
+          autoComplete='off'
           inputProps={{
             ...params.inputProps,
-            autoComplete: 'new-password', // disable autocomplete and autofill
+            // autoComplete: 'new-password', // disable autocomplete and autofill
           }}
+          onChange={(e, newText) => setTextFieldValue(e.target.value)}
         />
       )}
     />
@@ -272,40 +286,8 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
   const handleSubmit = async(event) => {
     event.preventDefault()
     console.log(searchedNoResult);
-    if(allFieldsFilled || searchedNoResult){
-      console.log(`No need to call api. All fields present`);
-      const reqBody = {
-        userId: auth.userId,
-        flightInformation: {
-          airlineIATA: airlineSelect.IATA,
-          airlineICAO: airlineSelect.ICAO,
-          aircraftRegistration,
-          aircraftType: aircraftTypeSelect.ICAO,
-          originICAO: departureAirportSelect.ICAO,
-          destinationICAO: arrivalAirportSelect.ICAO,
-          scheduledOut: date,
-          flightNumber
-        },
-        fromApi: false
-      }
 
-      try{
-        const SavedFlight = await axiosPrivate({
-          url: "/flight/add",
-          method: "post",
-          data: reqBody
-        })
-
-        setNotify({
-          message: "Successfully added flight.",
-          type: "success",
-          open: true
-        })
-      } catch(e){
-        console.log(e);
-      }
-    }
-    if(searchByRegistration){
+    if(searchByRegistration && !searchedNoResult){
       console.log("Call search by registration api");
         try{
           setRecommendedFlights({
@@ -347,7 +329,7 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
           console.log(e);
         }
     }
-    else{
+    if(!searchByRegistration && !searchedNoResult){
       console.log("Call search by flight number api");
 
       try{
@@ -388,6 +370,77 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
 
       catch(e){
         console.log(e);
+        setNotify({
+          message: e.reason,
+          type: "error",
+          open: true
+        })
+      }
+    }
+    // Typically when no results
+    else {
+      let reqBody = {}
+      if(searchedNoResult){
+        if(allFieldsFilled){
+          console.log(`No need to call api. All fields present`);
+          reqBody = {
+            userId: auth.userId,
+            flightInformation: {
+              airlineIATA: airlineSelect.IATA,
+              airlineICAO: airlineSelect.ICAO,
+              aircraftRegistration,
+              aircraftType: aircraftTypeSelect.ICAO,
+              originICAO: departureAirportSelect.ICAO,
+              destinationICAO: arrivalAirportSelect.ICAO,
+              scheduledOut: date,
+              flightNumber
+            },
+          }
+        }
+        else{
+          console.log(`No results found will add based on data entered`);
+          if(!aircraftRegistration && !date){
+            // throw error flight cant be added
+            setNotify({
+              message: "Cannot add flight",
+              type: "error",
+              open: true
+            })
+          }
+          else{
+            reqBody = {
+              userId: auth.userId,
+              flightInformation: {
+                airlineIATA: airlineSelect?.IATA ? airlineSelect.IATA : null,
+                airlineICAO: airlineSelect?.ICAO ? airlineSelect.ICAO : null,
+                aircraftRegistration,
+                aircraftType: aircraftTypeSelect?.ICAO ? aircraftTypeSelect.ICAO : null,
+                originICAO: departureAirportSelect?.ICAO ? departureAirportSelect.ICAO : null,
+                destinationICAO: arrivalAirportSelect?.ICAO ? arrivalAirportSelect.ICAO : null,
+                scheduledOut: date,
+                flightNumber: flightNumber ? flightNumber : null
+              },
+            }
+          }
+        }
+      }
+
+      if(Object.keys(reqBody).includes("flightInformation")){
+        try{
+          const SavedFlight = await axiosPrivate({
+            url: "/flight/add",
+            method: "post",
+            data: reqBody
+          })
+
+          setNotify({
+            message: "Successfully added flight.",
+            type: "success",
+            open: true
+          })
+        } catch(e){
+          console.log(e);
+        }
       }
     }
     console.log(date);
