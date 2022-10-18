@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import { AlertFeedbackComponent } from "../components/AlertFeedbackComponent"
 import axios from "../../api/axios"
 
 function Copyright(props) {
@@ -31,6 +32,12 @@ function Copyright(props) {
 const theme = createTheme();
 
 export const SignUp = () => {
+  const [notify, setNotify] = useState({
+    message: "",
+    type: "",
+    open: false
+  })
+
   const handleSubmit = async(event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -56,10 +63,17 @@ export const SignUp = () => {
         headers: { 'Content-Type': 'application/json'}
       })
 
-      console.log("Sign up successful")
-      console.log(SignupResponse);
+      setNotify({
+        message: "User sign up successful",
+        type: "success",
+        open: true
+      })
     } catch(e){
-      console.log(e);
+      setNotify({
+        message: e.response.data.message,
+        type: "error",
+        open: true
+      })
     }
   };
 
@@ -150,6 +164,7 @@ export const SignUp = () => {
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />
+        <AlertFeedbackComponent alert={notify} setAlert={setNotify} />
       </Container>
     </ThemeProvider>
   );
