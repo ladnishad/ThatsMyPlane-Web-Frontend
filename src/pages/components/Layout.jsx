@@ -15,9 +15,10 @@ const AppStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(1),
-    minHheight: "100vh",
+    minHeight: "100vh",
+    width: "100%",
     overflow: "auto",
-    marginBottom: 70
+    marginBottom: 70,
   },
 }))
 
@@ -38,20 +39,15 @@ const Layout = () => {
 
     return (
         <div className="App">
-          <Container fixed>
             <HeaderComponent userLoggedIn={userLoggedIn} />
-
-              <main className={classes.content}>
+              <Paper elevation={0} className={classes.content}>
                 <div className={classes.appBarSpace} />
-                  <Paper elevation={0}>
                     <Outlet />
-                  </Paper>
-                { userLoggedIn && (
-                  <BottomNavigationComponent />
-                )}
 
-              </main>
-            </Container>
+                  { userLoggedIn && (
+                    <BottomNavigationComponent />
+                  )}
+              </Paper>
         </div>
     )
 }
