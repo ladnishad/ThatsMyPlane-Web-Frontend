@@ -2,6 +2,7 @@ import React, { createContext, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route  } from "react-router-dom";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { CssVarsProvider } from '@mui/joy/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import './index.css';
 import App from './App';
@@ -20,7 +21,7 @@ const appTheme = createTheme({
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <ThemeProvider theme={appTheme}>
+  <CssVarsProvider theme={theme}>
        <CssBaseline />
         <Router>
             <AuthProvider>
@@ -29,7 +30,7 @@ root.render(
               </Routes>
             </AuthProvider>
           </Router>
-    </ThemeProvider>
+    </CssVarsProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

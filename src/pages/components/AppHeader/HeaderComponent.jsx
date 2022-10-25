@@ -54,9 +54,14 @@ export const HeaderComponent = ({ userLoggedIn }) => {
             </Box>
           )}
 
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <DarkModeToggle />
-          </Box>
+          {
+            userLoggedIn && (
+              <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                <DarkModeToggle />
+              </Box>
+            )
+          }
+
         </Toolbar>
       </AppBar>
     </Box>
