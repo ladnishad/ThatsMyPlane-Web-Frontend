@@ -90,7 +90,7 @@ export const SignIn = () => {
 
   return (
     <CssVarsProvider theme={theme}>
-      <Sheet
+      <Box
         sx={{
           width: 350,
           mx: 'auto', // margin left & right
@@ -100,16 +100,10 @@ export const SignIn = () => {
           display: 'flex',
           flexDirection: 'column',
           gap: 2,
-          borderRadius: 'sm',
-          boxShadow: 'md',
+          // borderRadius: 'sm',
+          // boxShadow: 'sm',
         }}
       >
-      <div>
-        <Typography level="h4" component="h1">
-          <b>Welcome!</b>
-        </Typography>
-        <Typography level="body2">Sign in to continue.</Typography>
-      </div>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{
           marginTop: 8,
           display: 'flex',
@@ -159,7 +153,7 @@ export const SignIn = () => {
         </Box>
         <Copyright sx={{ mt: 4, mb: 4 }} />
         <AlertFeedbackComponent alert={notify} setAlert={setNotify} />
-      </Sheet>
+      </Box>
     </CssVarsProvider>
   )
 }
