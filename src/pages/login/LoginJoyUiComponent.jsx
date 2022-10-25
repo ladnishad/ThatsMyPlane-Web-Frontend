@@ -6,7 +6,7 @@ import TextField from '@mui/joy/TextField';
 import Button from '@mui/joy/Button';
 import Link from '@mui/joy/Link';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import Checkbox from '@mui/joy/Checkbox';
 import Box from '@mui/joy/Box';
 import { Link as ReactRouterLink, useNavigate, useLocation } from 'react-router-dom';
 
@@ -119,6 +119,7 @@ export const SignIn = () => {
           placeholder="johndoe@email.com"
           required
           fullWidth
+          size="lg" variant="soft"
           sx={{
             mb: 3
           }}
@@ -127,19 +128,18 @@ export const SignIn = () => {
           <TextField
           name="password"
           type="password"
+          size="lg"
           required
           fullWidth
           placeholder="password"
           label="Password"
           id="password"
+          size="lg" variant="soft"
           sx={{
             mb: 3
           }}
           />
-          <FormControlLabel
-            control={<Checkbox value={persist} color="primary" onChange={togglePersist} checked={persist} />}
-            label="Remember This Device"
-          />
+          <Checkbox value={persist} color="primary" size="md" label="Remember This Device" onChange={togglePersist} variant="solid" checked={persist} sx={{mb: 2}} />
           <Button sx={{ mt: 1, mb: 1 /* margin top */ }} type="submit" fullWidth>
             Sign in
           </Button>
