@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { styled, useColorScheme } from '@mui/material/styles';
+import React, { useState, useEffect, useMemo, useContext } from 'react';
+import { styled, useTheme } from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
@@ -54,28 +54,10 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export const DarkModeToggle = () => {
-  const { mode, setMode } = useColorScheme();
-
-  const [isDarkMode, setIsDarkMode] = useState(mode === "dark" ? true : false)
-
-  const toggleMode = () => {
-    setIsDarkMode(!isDarkMode)
-  }
-
-  useEffect(() => {
-    if(isDarkMode){
-      setMode("dark")
-    }
-    else{
-      setMode("light")
-    }
-  }, [isDarkMode])
-
   return (
     <MaterialUISwitch
       sx={{ m: 1 }}
-      value={isDarkMode}
-      onChange={toggleMode}
+      value={false}
     />
   );
 }
