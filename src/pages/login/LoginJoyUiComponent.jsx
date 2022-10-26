@@ -85,6 +85,7 @@ export const SignIn = () => {
   }
 
   useEffect(() => {
+    console.log(persist);
     localStorage.setItem("persist", persist)
   }, [persist])
 
@@ -139,7 +140,7 @@ export const SignIn = () => {
             mb: 3
           }}
           />
-          <Checkbox value={persist} color="primary" size="md" label="Remember This Device" onChange={togglePersist} variant="solid" checked={persist} sx={{mb: 2}} />
+          <Checkbox value={persist} color="primary" size="md" label="Remember This Device" onChange={togglePersist} variant="outlined" checked={persist} sx={{mb: 2}} />
           <Button sx={{ mt: 1, mb: 1 /* margin top */ }} type="submit" fullWidth>
             Sign in
           </Button>

@@ -1,6 +1,7 @@
 import { SignIn } from "./pages/login/LoginJoyUiComponent"
 // import { SignIn } from "./pages/login/LoginComponent"
-import { SignUp } from "./pages/login/SignUpComponent"
+import { SignUp } from "./pages/login/SignUpJoyUiComponent"
+// import { SignUp } from "./pages/login/SignUpComponent"
 import { CenteredTextComponent } from "./pages/components/CenteredTextComponent"
 import { BaseForHomePage } from "./pages/homePage/BaseForHomePage"
 import { BaseForUserAircraftsComponent } from "./pages/userAircrafts/BaseForUserAircrafts"
