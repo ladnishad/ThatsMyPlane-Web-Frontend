@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react"
 import Grid from '@mui/material/Grid';
-import { UserFlightCardComponent } from "./UserFlightCardComponent"
+import { UserFlightCardComponent } from "./UserFlightCardComponentNew"
 
-export const UserFlightsListComponent = ({ flightsToShow }) => {
-  return flightsToShow.map(( flight, i ) => (
+export const UserFlightsListComponent = ({ aircraftsToShow }) => {
+  return aircraftsToShow.map(( aircraft, i ) => (
     <Grid item xs={12} md={4} sx={{ pt:1 }}>
-      <UserFlightCardComponent key={i} flight={flight} />
+      <UserFlightCardComponent key={i} aircraft={aircraft} />
     </Grid>
   ))
 }

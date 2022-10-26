@@ -66,8 +66,47 @@ const joyTheme = extendJoyTheme({
     }
   },
   fontFamily: {
-    display: '"Roboto","Helvetica","Arial",sans-serif',
-    body: '"Roboto","Helvetica","Arial",sans-serif',
+    body: '"Public Sans", var(--joy-fontFamily-fallback)',
+    display: '"Public Sans", var(--joy-fontFamily-fallback)',
+    code: 'Source Code Pro,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace',
+    fallback:
+      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+  },
+  fontSize: {
+    xs: '0.75rem',
+    sm: '0.875rem',
+    md: '1rem',
+    lg: '1.25rem',
+    xl: '1.5rem',
+    xl2: '1.875rem',
+    xl3: '2.25rem',
+    xl4: '3rem',
+    xl5: '3.75rem',
+    xl6: '4.5rem',
+  },
+  fontWeight: {
+    xs: 200,
+    sm: 300,
+    md: 500,
+    lg: 700,
+    xl: 800,
+  },
+  lineHeight: {
+    sm: 1.25,
+    md: 1.5,
+    lg: 1.7,
+  },
+  letterSpacing: {
+    sm: '-0.01em',
+    md: '0.083em',
+    lg: '0.125em',
+  },
+  radius: {
+    xs: '4px',
+    sm: '8px',
+    md: '12px',
+    lg: '16px',
+    xl: '20px',
   },
   typography: {
     appname: {

@@ -4,10 +4,12 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 
+import List from '@mui/joy/List';
+
 import useAuth from "../../hooks/useAuth"
 import useAxiosPrivate from "../../hooks/useAxiosPrivate"
 
-import { UserAircraftTypesFilterChipComponent } from "./UserAircraftTypesFilterChip"
+import { UserAircraftTypesFilterChipComponent } from "./UserAircraftTypesFilterChipNew"
 import { CenteredTextComponent } from "../components/CenteredTextComponent"
 import { UserFlightsListComponent } from "./UserFlightsList"
 
@@ -34,7 +36,6 @@ export const BaseForUserAircraftsComponent = () => {
 
         setUserFlightsData(UserAircraftsReq.data)
         console.log(UserAircraftsReq.data);
-        setAircraftTypesByFilters(UserAircraftsReq.data)
       } catch(e){
         console.log(e);
       }
@@ -42,16 +43,6 @@ export const BaseForUserAircraftsComponent = () => {
 
     getUserAircrafts()
   }, [])
-
-  useEffect(() => {
-    let processedFlights = []
-
-    aircraftTypesByFilters.forEach(({ flights }) => {
-      processedFlights = [...processedFlights, ...flights]
-    })
-
-    setFlightsToShow(processedFlights)
-  }, [aircraftTypesByFilters])
 
   return(
     <Container maxWidth="lg">
@@ -69,11 +60,20 @@ export const BaseForUserAircraftsComponent = () => {
             }}
             component="ul"
           >
-          { UserFlightsData.map((UserFlight) => <UserAircraftTypesFilterChipComponent aircraftType={UserFlight} aircraftTypesByFilters={aircraftTypesByFilters} setAircraftTypesByFilters={setAircraftTypesByFilters} />) }
+            <List
+              row
+              wrap
+              sx={{
+                '--List-gap': '8px',
+                '--List-item-radius': '20px',
+              }}
+            >
+              { UserFlightsData.map((UserFlight) => <UserAircraftTypesFilterChipComponent userFlights={UserFlight} />) }
+            </List>
           </Paper>
         </Grid>
         <Grid item container spacing={2} xs={12}>
-          <UserFlightsListComponent flightsToShow={flightsToShow} />
+          <UserFlightsListComponent aircraftsToShow={UserFlightsData} />
         </Grid>
       </Grid>
     </Container>
