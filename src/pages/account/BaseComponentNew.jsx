@@ -8,6 +8,8 @@ import ListDivider from '@mui/joy/ListDivider';
 import ListItem from '@mui/joy/ListItem';
 import ListItemContent from '@mui/joy/ListItemContent';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
+import Button from '@mui/joy/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
 import ListItemButton from '@mui/joy/ListItemButton';
 import Typography from '@mui/joy/Typography';
 import Sheet, { sheetClasses } from '@mui/joy/Sheet';
@@ -179,16 +181,16 @@ export const BaseForAccountPage = () => {
             <ListItem
               sx={{
                 bgcolor: 'background.surface',
-                mb: 1,
                 borderRadius: 'var(--List-radius)',
               }}
             >
-              <ListItemButton
-                aria-describedby="apple-tv-description"
-                sx={{ borderRadius: 'var(--List-radius)', bgcolor: 'red', alignItems: "center", justifyContent: 'center' }}
+              <Button
+                startDecorator={<DeleteIcon />}
+                fullWidth
+                variant="soft"
               >
                 Delete Account
-              </ListItemButton>
+              </Button>
             </ListItem>
             <Typography id="apple-tv-description" level="body3" aria-hidden>
               Delete your account information, activity permanently
