@@ -6,7 +6,8 @@ import { CenteredTextComponent } from "./pages/components/CenteredTextComponent"
 import { BaseForHomePage } from "./pages/homePage/BaseForHomePage"
 import { BaseForUserAircraftsComponent } from "./pages/userAircrafts/BaseForUserAircrafts"
 import { BaseForPostPage } from "./pages/post/BaseForPostPage"
-import { BaseForAccountPage } from "./pages/account/BaseComponent"
+// import { BaseForAccountPage } from "./pages/account/BaseComponent"
+import { BaseForAccountPage } from "./pages/account/BaseComponentNew"
 
 export const PublicRoutes = [
   {
