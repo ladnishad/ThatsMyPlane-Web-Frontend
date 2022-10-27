@@ -8,8 +8,10 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Divider from '@mui/material/Divider';
 import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
+import Button from '@mui/joy/Button';
 import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
 import SavedSearchIcon from '@mui/icons-material/SavedSearch';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Tooltip from '@mui/material/Tooltip';
@@ -479,10 +481,12 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
           {
             searchedNoResult === false && (
               <Button
+                startDecorator={<SearchIcon />}
                 type="submit"
                 fullWidth
                 disabled={requiredFieldsFilled === false}
-                variant="contained"
+                // variant="contained"
+                // color="primary"
                 sx={{ mt: 3, mb: 2 }}
               >
                 { allFieldsFilled ? "Add Flight" : "Search flight" }
@@ -537,10 +541,12 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
                 {
                   searchedNoResult && (
                     <Button
+                      startDecorator={<SearchIcon />}
                       type="submit"
                       fullWidth
                       disabled={requiredFieldsFilled === false}
-                      variant="contained"
+                      // variant="contained"
+                      // color="primary"
                       sx={{ mt: 3, mb: 2 }}
                     >
                       Add Flight

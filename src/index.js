@@ -22,8 +22,7 @@ const appTheme = createTheme({
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <StyledEngineProvider injectFirst>
-      <CssVarsProvider theme={theme}>
+    <CssVarsProvider theme={theme}>
         <Router>
           <AuthProvider>
             <Routes>
@@ -32,7 +31,6 @@ root.render(
           </AuthProvider>
         </Router>
       </CssVarsProvider>
-    </StyledEngineProvider>
   </React.StrictMode>
 );
 
