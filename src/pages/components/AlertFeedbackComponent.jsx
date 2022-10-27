@@ -30,7 +30,7 @@ export const AlertFeedbackComponent = ({ alert, setAlert }) => {
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         open={alert.open}
         autoHideDuration={5500}
-        sx={{ marginBottom: "50px"}}
+        sx={{ marginBottom: "80px"}}
         TransitionComponent={SlideTransition}
         onClose={handleClose}
       >
