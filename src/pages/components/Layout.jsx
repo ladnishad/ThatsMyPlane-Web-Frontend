@@ -21,7 +21,7 @@ const AppStyles = makeStyles((theme) => ({
     minHeight: "100vh",
     width: "100%",
     // overflow: "auto",
-    // marginBottom: 70,
+    marginBottom: 90,
   },
 }))
 

@@ -78,7 +78,10 @@ export const BottomNavigationComponent = () => {
   return (
     <Box
         sx={{
-          position: 'fixed', bottom: 0, left: 0, right: 0,
+          position: 'fixed',
+          bottom: -5,
+          left: 0,
+          right: 0,
           m: -3,
           mr: 0.1,
           ml: 0.1,
