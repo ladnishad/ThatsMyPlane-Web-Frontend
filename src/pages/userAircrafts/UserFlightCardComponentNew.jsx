@@ -61,7 +61,7 @@ export const UserFlightCardComponent = ({ aircraft }) => {
         <Typography
           textColor="neutral.300"
         >
-          {startCase(aircraft.airline.name.toLowerCase())}
+          {startCase(aircraft?.airline?.name.toLowerCase())}
         </Typography>
       </CardContent>
     </Card>

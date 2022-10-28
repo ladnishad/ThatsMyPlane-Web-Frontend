@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react"
 import { Outlet } from "react-router-dom"
 import { makeStyles } from '@mui/styles';
-
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 
@@ -20,8 +19,9 @@ const AppStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     minHeight: "100vh",
     width: "100%",
+    paddingBottom: 90
     // overflow: "auto",
-    marginBottom: 90,
+    // marginBottom: 90,
   },
 }))
 
@@ -44,12 +44,13 @@ const Layout = () => {
         <div className="App">
             <HeaderComponent userLoggedIn={userLoggedIn} />
               <Paper elevation={0} className={classes.content}>
-                <div />
+                <Container maxWidth="lg">
                     <Outlet />
 
                   { userLoggedIn && (
                     <BottomNavigationComponent />
                   )}
+                </Container>
               </Paper>
         </div>
     )

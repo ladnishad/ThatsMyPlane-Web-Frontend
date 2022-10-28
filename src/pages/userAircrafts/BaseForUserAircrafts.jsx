@@ -47,31 +47,6 @@ export const BaseForUserAircraftsComponent = () => {
   return(
     <Container maxWidth="lg">
       <Grid container direction="column" spacing={2}>
-        <Grid item>
-          <Paper
-            elevation={0}
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              flexWrap: 'wrap',
-              listStyle: 'none',
-              p: 0.5,
-              m: 0,
-            }}
-            component="ul"
-          >
-            <List
-              row
-              wrap
-              sx={{
-                '--List-gap': '8px',
-                '--List-item-radius': '20px',
-              }}
-            >
-              { UserFlightsData.map((UserFlight) => <UserAircraftTypesFilterChipComponent userFlights={UserFlight} />) }
-            </List>
-          </Paper>
-        </Grid>
         <Grid item container spacing={2} xs={12}>
           <UserFlightsListComponent aircraftsToShow={UserFlightsData} />
         </Grid>
@@ -79,3 +54,29 @@ export const BaseForUserAircraftsComponent = () => {
     </Container>
   )
 }
+
+// <Grid item>
+//   <Paper
+//     elevation={0}
+//     sx={{
+//       display: 'flex',
+//       justifyContent: 'center',
+//       flexWrap: 'wrap',
+//       listStyle: 'none',
+//       p: 0.5,
+//       m: 0,
+//     }}
+//     component="ul"
+//   >
+//     <List
+//       row
+//       wrap
+//       sx={{
+//         '--List-gap': '8px',
+//         '--List-item-radius': '20px',
+//       }}
+//     >
+//       { UserFlightsData.map((UserFlight) => <UserAircraftTypesFilterChipComponent userFlights={UserFlight} />) }
+//     </List>
+//   </Paper>
+// </Grid>

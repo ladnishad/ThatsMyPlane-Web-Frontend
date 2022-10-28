@@ -111,7 +111,7 @@ const joyTheme = extendJoyTheme({
   typography: {
     appname: {
       fontFamily: '"Pacifico", cursive',
-      fontSize: 26
+      fontSize: 24
     }
   },
   shadow: {

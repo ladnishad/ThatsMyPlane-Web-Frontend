@@ -41,22 +41,19 @@ export const PostTabsComponent = () => {
         value={value}
         onChange={handleChange}
       >
-        <TabList variant="soft" color="neutral">
+        <TabList variant="soft" color="primary">
           <Tab
-            variant={value === 0 ? 'solid' : 'plain'}
-            color={value === 0 ? 'primary' : 'neutral'}
+            variant={value === 0 ? 'outlined' : 'plain'}
           >
             Flight
           </Tab>
           <Tab
-            variant={value === 1 ? 'solid' : 'plain'}
-            color={value === 1 ? 'primary' : 'neutral'}
+            variant={value === 1 ? 'outlined' : 'plain'}
           >
             Upload
           </Tab>
           <Tab
-            variant={value === 2 ? 'solid' : 'plain'}
-            color={value === 2 ? 'primary' : 'neutral'}
+            variant={value === 2 ? 'outlined' : 'plain'}
           >
             Spotting
           </Tab>

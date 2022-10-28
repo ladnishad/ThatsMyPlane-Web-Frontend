@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Box from '@mui/joy/Box';
 import Paper from '@mui/material/Paper';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
+import Container from '@mui/material/Container';
 import Tabs from '@mui/joy/Tabs';
 import TabList from '@mui/joy/TabList';
 import Tab, { tabClasses } from '@mui/joy/Tab';
@@ -91,6 +92,7 @@ export const BottomNavigationComponent = () => {
           bgcolor: "primary",
         }}
       >
+        <Container maxWidth="lg">
         <Tabs
           size="lg"
           aria-label="Bottom Navigation"
@@ -162,6 +164,7 @@ export const BottomNavigationComponent = () => {
             </Tab>
           </TabList>
         </Tabs>
+      </Container>
       </Box>
   );
 }

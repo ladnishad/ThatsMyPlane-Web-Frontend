@@ -63,7 +63,7 @@ export const BaseForAccountPage = () => {
   }, [auth])
 
   return (
-    <Container maxWidth="md" className="animate__animated animate__fadeIn">
+    <Container maxWidth="lg" className="animate__animated animate__fadeIn">
       <Sheet variant="plain" sx={{ width: "100%", p: 2, borderRadius: 'sm' }}>
         <List
           aria-labelledby="ios-example-demo"
