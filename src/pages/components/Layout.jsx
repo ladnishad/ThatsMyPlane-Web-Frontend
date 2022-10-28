@@ -19,7 +19,7 @@ const AppStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     minHeight: "100vh",
     width: "100%",
-    paddingBottom: 90
+    paddingBottom: 140
     // overflow: "auto",
     // marginBottom: 90,
   },
