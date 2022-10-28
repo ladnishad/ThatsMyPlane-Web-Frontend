@@ -287,164 +287,260 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
 
   const handleSubmit = async(event) => {
     event.preventDefault()
-    console.log(searchedNoResult);
 
-    if(searchByRegistration && !searchedNoResult){
-      console.log("Call search by registration api");
-        try{
-          setRecommendedFlights({
-            isLoading: true,
-            data: []
-          })
-          const SearchByRegistrationReq = await axiosPrivate({
-            url: "/search/flights/registration",
-            method: "post",
-            data: {
-              registrationNumber: aircraftRegistration,
-              flightDate: date
-            }
-          })
+    const currentTime = dayjs().valueOf()
 
-          if(SearchByRegistrationReq.data.length){
+      if(searchByRegistration && !searchedNoResult){
+        if(date < currentTime){
+          const flightSearchParam = aircraftRegistration
+
+          console.log("Calling historic data api");
+
+          try{
             setRecommendedFlights({
-              isLoading: false,
-              data: SearchByRegistrationReq.data
-            })
-          }
-          else{
-            setRecommendedFlights({
-              isLoading: false,
+              isLoading: true,
               data: []
             })
 
-            setNotify({
-              message: "No flights found. Please add manually.",
-              type: "warning",
-              open: true
+            const SearchHistoricFlight = await axiosPrivate({
+              url: "/search/historic/flights",
+              method: "post",
+              data: {
+                flightSearchParam,
+                flightDate: date
+              }
             })
 
-            setSearchedNoResult(true)
-          }
-        }
+            console.log(SearchHistoricFlight.data);
+            if(SearchHistoricFlight.data.length){
+              setRecommendedFlights({
+                isLoading: false,
+                data: SearchHistoricFlight.data
+              })
+            }
+            else{
+              setRecommendedFlights({
+                isLoading: false,
+                data: []
+              })
 
-        catch(e){
-          console.log(e);
-        }
-    }
-    if(!searchByRegistration && !searchedNoResult){
-      console.log("Call search by flight number api");
+              setNotify({
+                message: "No flights found. Please add manually.",
+                type: "warning",
+                open: true
+              })
 
-      try{
-        setRecommendedFlights({
-          isLoading: true,
-          data: []
-        })
-        const SearchByFlightNumberReq = await axiosPrivate({
-          url: "/search/flights/flightNumber",
-          method: "post",
-          data: {
-            flightNumber,
-            flightDate: date
-          }
-        })
-
-        if(SearchByFlightNumberReq.data.length){
-          setRecommendedFlights({
-            isLoading: false,
-            data: SearchByFlightNumberReq.data
-          })
-        }
-        else{
-          setRecommendedFlights({
-            isLoading: false,
-            data: []
-          })
-
-          setNotify({
-            message: "No flights found. Please add manually.",
-            type: "warning",
-            open: true
-          })
-
-          setSearchedNoResult(true)
-        }
-      }
-
-      catch(e){
-        console.log(e);
-        setNotify({
-          message: e.reason,
-          type: "error",
-          open: true
-        })
-      }
-    }
-    // Typically when no results
-    else {
-      let reqBody = {}
-      if(searchedNoResult){
-        if(allFieldsFilled){
-          console.log(`No need to call api. All fields present`);
-          reqBody = {
-            userId: auth.userId,
-            flightInformation: {
-              airlineIATA: airlineSelect.IATA,
-              airlineICAO: airlineSelect.ICAO,
-              aircraftRegistration,
-              aircraftType: aircraftTypeSelect.ICAO,
-              originICAO: departureAirportSelect.ICAO,
-              destinationICAO: arrivalAirportSelect.ICAO,
-              scheduledOut: date,
-              flightNumber
-            },
+              setSearchedNoResult(true)
+            }
+          } catch(e){
+            console.log(e);
           }
         }
         else{
-          console.log(`No results found will add based on data entered`);
-          if(!aircraftRegistration && !date){
-            // throw error flight cant be added
+          console.log("Call search by registration api");
+            try{
+              setRecommendedFlights({
+                isLoading: true,
+                data: []
+              })
+              const SearchByRegistrationReq = await axiosPrivate({
+                url: "/search/flights/registration",
+                method: "post",
+                data: {
+                  registrationNumber: aircraftRegistration,
+                  flightDate: date
+                }
+              })
+
+              if(SearchByRegistrationReq.data.length){
+                setRecommendedFlights({
+                  isLoading: false,
+                  data: SearchByRegistrationReq.data
+                })
+              }
+              else{
+                setRecommendedFlights({
+                  isLoading: false,
+                  data: []
+                })
+
+                setNotify({
+                  message: "No flights found. Please add manually.",
+                  type: "warning",
+                  open: true
+                })
+
+                setSearchedNoResult(true)
+              }
+            }
+
+            catch(e){
+              console.log(e);
+            }
+        }
+      }
+      if(!searchByRegistration && !searchedNoResult){
+        if(date < currentTime){
+          const flightSearchParam = flightNumber
+
+          console.log("Calling historic data api");
+
+          try{
+            setRecommendedFlights({
+              isLoading: true,
+              data: []
+            })
+
+            const SearchHistoricFlight = await axiosPrivate({
+              url: "/search/historic/flights",
+              method: "post",
+              data: {
+                flightSearchParam,
+                flightDate: date
+              }
+            })
+
+            console.log(SearchHistoricFlight.data);
+            if(SearchHistoricFlight.data.length){
+              setRecommendedFlights({
+                isLoading: false,
+                data: SearchHistoricFlight.data
+              })
+            }
+            else{
+              setRecommendedFlights({
+                isLoading: false,
+                data: []
+              })
+
+              setNotify({
+                message: "No flights found. Please add manually.",
+                type: "warning",
+                open: true
+              })
+
+              setSearchedNoResult(true)
+            }
+          } catch(e){
+            console.log(e);
+          }
+        }
+
+        else {
+          console.log("Call search by flight number api");
+
+          try{
+            setRecommendedFlights({
+              isLoading: true,
+              data: []
+            })
+            const SearchByFlightNumberReq = await axiosPrivate({
+              url: "/search/flights/flightNumber",
+              method: "post",
+              data: {
+                flightNumber,
+                flightDate: date
+              }
+            })
+
+            if(SearchByFlightNumberReq.data.length){
+              setRecommendedFlights({
+                isLoading: false,
+                data: SearchByFlightNumberReq.data
+              })
+            }
+            else{
+              setRecommendedFlights({
+                isLoading: false,
+                data: []
+              })
+
+              setNotify({
+                message: "No flights found. Please add manually.",
+                type: "warning",
+                open: true
+              })
+
+              setSearchedNoResult(true)
+            }
+          }
+
+          catch(e){
+            console.log(e);
             setNotify({
-              message: "Cannot add flight",
+              message: e.reason,
               type: "error",
               open: true
             })
           }
-          else{
+        }
+      }
+      // Typically when no results
+      else {
+        let reqBody = {}
+        if(searchedNoResult){
+          if(allFieldsFilled){
+            console.log(`No need to call api. All fields present`);
             reqBody = {
               userId: auth.userId,
               flightInformation: {
-                airlineIATA: airlineSelect?.IATA ? airlineSelect.IATA : null,
-                airlineICAO: airlineSelect?.ICAO ? airlineSelect.ICAO : null,
+                airlineIATA: airlineSelect.IATA,
+                airlineICAO: airlineSelect.ICAO,
                 aircraftRegistration,
-                aircraftType: aircraftTypeSelect?.ICAO ? aircraftTypeSelect.ICAO : null,
-                originICAO: departureAirportSelect?.ICAO ? departureAirportSelect.ICAO : null,
-                destinationICAO: arrivalAirportSelect?.ICAO ? arrivalAirportSelect.ICAO : null,
+                aircraftType: aircraftTypeSelect.ICAO,
+                originICAO: departureAirportSelect.ICAO,
+                destinationICAO: arrivalAirportSelect.ICAO,
                 scheduledOut: date,
-                flightNumber: flightNumber ? flightNumber : null
+                flightNumber
               },
             }
           }
+          else{
+            console.log(`No results found will add based on data entered`);
+            if(!aircraftRegistration && !date){
+              // throw error flight cant be added
+              setNotify({
+                message: "Cannot add flight",
+                type: "error",
+                open: true
+              })
+            }
+            else{
+              reqBody = {
+                userId: auth.userId,
+                flightInformation: {
+                  airlineIATA: airlineSelect?.IATA ? airlineSelect.IATA : null,
+                  airlineICAO: airlineSelect?.ICAO ? airlineSelect.ICAO : null,
+                  aircraftRegistration,
+                  aircraftType: aircraftTypeSelect?.ICAO ? aircraftTypeSelect.ICAO : null,
+                  originICAO: departureAirportSelect?.ICAO ? departureAirportSelect.ICAO : null,
+                  destinationICAO: arrivalAirportSelect?.ICAO ? arrivalAirportSelect.ICAO : null,
+                  scheduledOut: date,
+                  flightNumber: flightNumber ? flightNumber : null
+                },
+              }
+            }
+          }
+        }
+
+        if(Object.keys(reqBody).includes("flightInformation")){
+          try{
+            const SavedFlight = await axiosPrivate({
+              url: "/flight/add",
+              method: "post",
+              data: reqBody
+            })
+
+            setNotify({
+              message: "Successfully added flight.",
+              type: "success",
+              open: true
+            })
+          } catch(e){
+            console.log(e);
+          }
         }
       }
-
-      if(Object.keys(reqBody).includes("flightInformation")){
-        try{
-          const SavedFlight = await axiosPrivate({
-            url: "/flight/add",
-            method: "post",
-            data: reqBody
-          })
-
-          setNotify({
-            message: "Successfully added flight.",
-            type: "success",
-            open: true
-          })
-        } catch(e){
-          console.log(e);
-        }
-      }
-    }
     console.log(date);
     console.log(aircraftRegistration);
     console.log(flightNumber);
