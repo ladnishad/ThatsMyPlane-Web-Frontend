@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +12,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+import { AlertFeedbackComponent } from "../components/AlertFeedbackComponent"
+import axios from "../../api/axios"
 
 function Copyright(props) {
   return (
@@ -29,13 +32,49 @@ function Copyright(props) {
 const theme = createTheme();
 
 export const SignUp = () => {
-  const handleSubmit = (event) => {
+  const [notify, setNotify] = useState({
+    message: "",
+    type: "",
+    open: false
+  })
+
+  const handleSubmit = async(event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
+      firstName: data.get('firstName'),
+      lastName: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
     });
+
+    try{
+      const firstName = data.get('firstName')
+      const lastName = data.get('lastName')
+      const email = data.get('email')
+      const password = data.get('password')
+
+      const reqBody = await JSON.stringify({ firstName, lastName, email, password })
+
+      const SignupResponse = await axios({
+        url: '/signup',
+        method: 'post',
+        data: reqBody,
+        headers: { 'Content-Type': 'application/json'}
+      })
+
+      setNotify({
+        message: "User sign up successful",
+        type: "success",
+        open: true
+      })
+    } catch(e){
+      setNotify({
+        message: e.response.data.message,
+        type: "error",
+        open: true
+      })
+    }
   };
 
   return (
@@ -125,6 +164,7 @@ export const SignUp = () => {
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />
+        <AlertFeedbackComponent alert={notify} setAlert={setNotify} />
       </Container>
     </ThemeProvider>
   );

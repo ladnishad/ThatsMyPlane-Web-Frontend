@@ -1,8 +1,8 @@
 import React from "react";
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
 
-export const CenteredTextComponent=({ text, variant="h4" })=>{
+export const CenteredLoadingComponent=()=>{
   return(
 		<Grid
         container
@@ -11,9 +11,7 @@ export const CenteredTextComponent=({ text, variant="h4" })=>{
         alignItems="center"
         justify="center"
       >
-        <Typography variant={variant} align="center">
-          { text }
-        </Typography>
+        <CircularProgress />
       </Grid>
 	)
 }
