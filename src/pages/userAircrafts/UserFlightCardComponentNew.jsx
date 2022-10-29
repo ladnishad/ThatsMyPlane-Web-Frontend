@@ -55,10 +55,11 @@ export const UserFlightCardComponent = ({ aircraft }) => {
         }}
       />
       <CardContent sx={{ justifyContent: 'flex-end' }}>
-        <Typography level="h2" fontSize="lg" textColor="#fff" mb={1}>
+        <Typography level="h2" fontSize="lg" fontWeight="lg" align="left" textColor="#fff" mb={1}>
           {aircraft.registrationNum}
         </Typography>
         <Typography
+          align="left"
           textColor="neutral.300"
         >
           {startCase(aircraft?.airline?.name.toLowerCase())}
