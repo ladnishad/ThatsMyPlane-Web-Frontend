@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as ReactRouterLink, useNavigate, useLocation } from 'react-router-dom';
 import axios from "../../api/axios"
 import useAuth from "../../hooks/useAuth"
+import { AlertFeedbackComponent } from "../components/AlertFeedbackComponent"
 
 function Copyright(props) {
   return (
@@ -32,6 +33,12 @@ function Copyright(props) {
 const theme = createTheme();
 
 export const SignIn = () => {
+  const [notify, setNotify] = useState({
+    message: "",
+    type: "",
+    open: false
+  })
+
   const { setAuth, persist, setPersist } = useAuth()
 
   const navigate = useNavigate();
@@ -60,12 +67,19 @@ export const SignIn = () => {
       setAuth({ userId, accessToken });
       navigate(from, { replace: true });
     } catch(e){
-      console.log(e)
-      if(!e?.loginResponse){
-        console.log("No server response")
+      if(e?.response?.data?.message){
+        setNotify({
+          message: e.response.data.message,
+          type: "error",
+          open: true
+        })
       }
       else{
-        console.log(e)
+        setNotify({
+          message: "Something went wrong",
+          type: "error",
+          open: true
+        })
       }
     }
   };
@@ -144,6 +158,7 @@ export const SignIn = () => {
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
+        <AlertFeedbackComponent alert={notify} setAlert={setNotify} />
       </Container>
     </ThemeProvider>
   );

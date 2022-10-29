@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import Card from "@mui/material/Card";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate"
-import { CenteredTextComponent } from "../components/CenteredTextComponent"
-
 
 export const BaseForHomePage = () => {
   const [position, setPosition] = useState({ lat: null, long: null})
@@ -49,6 +51,32 @@ export const BaseForHomePage = () => {
 
     console.log(position)
     return (
-      <CenteredTextComponent text="Home" />
+      <Card
+      sx={{
+        width: "100%",
+        height: "20%",
+        paddingTop: "10px",
+        paddingBottom: "10px"
+        // paddingLeft: "10px"
+      }}
+    >
+      <Grid
+        container
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="center"
+        sx={{ width: "100%" }}
+      >
+        <Grid item sx={{ width: "100%" }}>
+          <TextField
+            fullWidth
+            label="Write your thoughts"
+            id="postText"
+            sx={{ width: "85%" }}
+            size="small"
+          />
+        </Grid>
+      </Grid>
+    </Card>
     )
 }
