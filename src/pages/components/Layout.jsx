@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react"
 import { Outlet } from "react-router-dom"
 import { makeStyles } from '@mui/styles';
+import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
 
-import { HeaderComponent } from "./AppHeader/HeaderComponent"
-import { BottomNavigationComponent } from "./AppFooter/FooterComponent"
+// import { HeaderComponent } from "./AppHeader/HeaderComponent"
+import { HeaderComponent } from "./AppHeader/HeaderComponentNew"
+
+// import { BottomNavigationComponent } from "./AppFooter/FooterComponent"
+import { BottomNavigationComponent } from "./AppFooter/FooterComponentNew"
 
 import useAuth from "../../hooks/useAuth"
 
@@ -12,8 +17,11 @@ const AppStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(1),
-    height: "80vh",
-    overflow: "auto",
+    minHeight: "100vh",
+    width: "100%",
+    paddingBottom: 140
+    // overflow: "auto",
+    // marginBottom: 90,
   },
 }))
 
@@ -34,15 +42,16 @@ const Layout = () => {
 
     return (
         <div className="App">
-          <HeaderComponent userLoggedIn={userLoggedIn} />
-            <main className={classes.content}>
-              <div className={classes.appBarSpace} />
-              <Outlet />
-              { userLoggedIn && (
-                <BottomNavigationComponent />
-              )}
+            <HeaderComponent userLoggedIn={userLoggedIn} />
+              <Paper elevation={0} className={classes.content}>
+                <Container maxWidth="lg">
+                    <Outlet />
 
-            </main>
+                  { userLoggedIn && (
+                    <BottomNavigationComponent />
+                  )}
+                </Container>
+              </Paper>
         </div>
     )
 }
