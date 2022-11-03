@@ -15,7 +15,7 @@ import { CenteredLoadingComponent } from "../../components/CenteredLoadingCompon
 import { CenteredTextComponent } from "../../components/CenteredTextComponent"
 import { RecommendedFlightsList } from "./RecommendedFlightsListComponent"
 import { ConfirmDialogComponent } from "../../components/ConfirmDialogComponent"
-import { ConfirmDialogWithMediaComponent } from "./ConfirmDialogWithMedia"
+import { ConfirmDialogWithMediaComponent } from "./NewConfirmDialogWithMedia"
 
 export const BaseForFlightTabComponent = () => {
   const { auth } = useAuth()
@@ -101,7 +101,7 @@ export const BaseForFlightTabComponent = () => {
       </Grid>
       {
         openConfirmAddFlightDialog && (
-            <ConfirmDialogWithMediaComponent open={openConfirmAddFlightDialog} flight={selectedFlight} setOpen={setOpenConfirmAddFlightDialog} title="Confirm add aircraft" message="Review visibility and add a caption" handleConfirm={handleAddFlight} visibility={visibility} setVisibility={setVisibility} caption={caption} setCaption={setCaption} />
+            <ConfirmDialogWithMediaComponent open={openConfirmAddFlightDialog} flight={selectedFlight} setOpen={setOpenConfirmAddFlightDialog} title="Confirm" message="Review visibility and add a caption" handleConfirm={handleAddFlight} visibility={visibility} setVisibility={setVisibility} caption={caption} setCaption={setCaption} />
         )
       }
       </>
