@@ -21,7 +21,7 @@ export const BaseForFlightTabComponent = () => {
   const { auth } = useAuth()
   const axiosPrivate = useAxiosPrivate()
 
-  const [searchByRegistration, setSearchByRegistration] = useState(true)
+  const [searchByRegistration, setSearchByRegistration] = useState(false)
   const [selectedFlight, setSelectedFlight] = useState({})
   const [visibility, setVisibility] = useState("Private")
   const [caption, setCaption] = useState("")
@@ -75,7 +75,7 @@ export const BaseForFlightTabComponent = () => {
         <Grid item xs={12} className="animate__animated animate__fadeIn animate__faster" >
           <Card>
             <CardContent>
-              <FlightFormComponent setRecommendedFlights={setRecommendedFlights} searchByRegistration={searchByRegistration} setSearchByRegistration={setSearchByRegistration} selectedFlight={selectedFlight} />
+              <FlightFormComponent recommendedFlights={recommendedFlights} setRecommendedFlights={setRecommendedFlights} searchByRegistration={searchByRegistration} setSearchByRegistration={setSearchByRegistration} selectedFlight={selectedFlight} />
             </CardContent>
           </Card>
         </Grid>

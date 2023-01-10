@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { styled } from '@mui/material/styles';
 import dayjs from "dayjs"
+import isToday from 'dayjs/plugin/isToday'
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -13,12 +14,15 @@ import Button from '@mui/joy/Button';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import SavedSearchIcon from '@mui/icons-material/SavedSearch';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Tooltip from '@mui/material/Tooltip';
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate"
 import useAuth from "../../../hooks/useAuth"
 import { DatePickerComponent } from "../../components/DatePicker"
 import { AlertFeedbackComponent } from "../../components/AlertFeedbackComponent"
+
+dayjs.extend(isToday)
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -244,11 +248,14 @@ export const AirportsSelect = ({ airportType, value, setValue }) => {
   );
 }
 
-export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistration, setSearchByRegistration, selectedFlight }) => {
+export const FlightFormComponent = ({ recommendedFlights, setRecommendedFlights, searchByRegistration, setSearchByRegistration, selectedFlight }) => {
   const [expanded, setExpanded] = useState(false);
   const [allFieldsFilled, setAllFieldsFilled] = useState(false)
   const [requiredFieldsFilled, setRequiredFieldsFilled] = useState(false)
+
+  const [searchReturnedResult, setSearchReturnedResult] = useState(false)
   const [searchedNoResult, setSearchedNoResult] = useState(false)
+
   const { auth } = useAuth()
   const axiosPrivate = useAxiosPrivate()
 
@@ -281,17 +288,23 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
     }
   }, [aircraftRegistration, flightNumber, date, airlineSelect, arrivalAirportSelect, departureAirportSelect, aircraftTypeSelect])
 
+  useEffect(() => {
+      if(!recommendedFlights.isLoading && recommendedFlights.data.length){
+        setSearchReturnedResult(true)
+      }
+  }, [recommendedFlights])
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   const handleSubmit = async(event) => {
     event.preventDefault()
-
+    
     const currentTime = dayjs().valueOf()
-
+    const dateIsToday = dayjs(date).isToday()
       if(searchByRegistration && !searchedNoResult){
-        if(date < currentTime){
+        if(!dateIsToday && date < currentTime){
           const flightSearchParam = aircraftRegistration
 
           console.log("Calling historic data api");
@@ -380,7 +393,7 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
         }
       }
       if(!searchByRegistration && !searchedNoResult){
-        if(date < currentTime){
+        if(!dateIsToday && date < currentTime){
           const flightSearchParam = flightNumber
 
           console.log("Calling historic data api");
@@ -573,10 +586,34 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
         <Grid item>
           <SearchByLabel searchByRegistration={searchByRegistration} setSearchByRegistration={setSearchByRegistration} />
         </Grid>
+
+        {
+          (recommendedFlights.data.length > 0 || searchedNoResult) && (
+            <Grid item>
+              <Button
+                startDecorator={<RestartAltIcon />}
+                variant="solid"
+                // color="primary"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={() => {
+                    setRecommendedFlights({
+                      isLoading: false,
+                      data: []
+                    })
+                    setSearchReturnedResult(false)
+                    setSearchedNoResult(false)
+                }}
+              >
+                Reset search
+              </Button>
+            </Grid>
+          )
+        }
         <Grid item>
           {
-            searchedNoResult === false && (
+            searchReturnedResult === false && searchedNoResult === false && (
               <Button
+                loading={recommendedFlights.isLoading}
                 startDecorator={<SearchIcon />}
                 type="submit"
                 fullWidth
@@ -590,20 +627,24 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
             )
           }
         </Grid>
-        <Grid item>
-          <Divider>
-              <ExpandMore
-                expand={searchedNoResult}
-                onClick={handleExpandClick}
-                aria-expanded={searchedNoResult}
-                aria-label="show more"
-              >
-                <Tooltip title="Additional information" placement="bottom">
-                  <ExpandMoreIcon />
-                </Tooltip>
-              </ExpandMore>
-          </Divider>
-        </Grid>
+        {
+          searchedNoResult && (
+            <Grid item>
+              <Divider>
+                  <ExpandMore
+                    expand={searchedNoResult}
+                    onClick={handleExpandClick}
+                    aria-expanded={searchedNoResult}
+                    aria-label="show more"
+                  >
+                    <Tooltip title="Additional information" placement="bottom">
+                      <ExpandMoreIcon />
+                    </Tooltip>
+                  </ExpandMore>
+              </Divider>
+            </Grid>
+          )
+        }
 
         <Grid item>
           <Collapse in={searchedNoResult} timeout="auto" unmountOnExit>

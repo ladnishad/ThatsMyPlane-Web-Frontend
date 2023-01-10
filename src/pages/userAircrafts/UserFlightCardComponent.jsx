@@ -1,32 +1,38 @@
 import React, { useEffect, useState } from 'react';
+import { startCase } from "lodash"
 import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
-
-import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
-import FlightLandIcon from '@mui/icons-material/FlightLand';
-import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
+import Card from '@mui/joy/Card';
+import CardCover from '@mui/joy/CardCover';
+import CardContent from '@mui/joy/CardContent';
+import Typography from '@mui/joy/Typography';
 
 import useAxiosPrivate from "../../hooks/useAxiosPrivate"
 
 dayjs.extend(relativeTime)
 
-export const UserFlightCardComponent = ({ flight }) => {
+export const UserFlightCardComponent = ({ aircraft, openFlightDetailsDrawer, setFlightDetailsDrawer, aircraftToShow, setAircraftToShow }) => {
   const axiosPrivate = useAxiosPrivate()
   const [aircraftImages, setAircraftImages] = useState([])
+  const [cardClicked, setCardClicked] = useState(false)
+
+  useEffect(() => {
+      if(cardClicked){
+        setAircraftToShow(aircraft)
+        setFlightDetailsDrawer(true)
+      }
+      else {
+        setFlightDetailsDrawer(false)
+        setAircraftToShow(null)
+      }
+  }, [cardClicked])
 
   useEffect(() => {
     const getAircraftImages = async() => {
       try{
         const reqBody = {
-          aircraftRegistration: flight.aircraft.registrationNum
+          aircraftRegistration: aircraft.registrationNum
         }
 
         const AircraftImagesReq = await axiosPrivate({
@@ -42,36 +48,35 @@ export const UserFlightCardComponent = ({ flight }) => {
     }
 
     getAircraftImages()
-  }, [flight])
+  }, [aircraft])
 
   return (
-    <Card
-      sx={{ height: 400}}
-      className="animate__animated animate__fadeIn"
-    >
-      <CardMedia
-        component="img"
-        sx={{ height: "40%" }}
-        image={aircraftImages.pop()?.aircraftPhotoURL}
-        alt={aircraftImages.pop()?.aircraftPhotoTitle}
+    <Card sx={{ height: "280px" }} className="animate__animated animate__fadeIn" onClick={() => setCardClicked(!cardClicked)}>
+      <CardCover>
+        <img
+          src={`${aircraftImages?.pop()?.aircraftPhotoURL}?auto=format&fit=crop&w=320`}
+          srcSet={`${aircraftImages?.pop()?.aircraftPhotoURL}?auto=format&fit=crop&w=320&dpr=2 2x`}
+          loading="lazy"
+          alt={aircraftImages?.pop()?.aircraftPhotoTitle}
+        />
+      </CardCover>
+      <CardCover
+        sx={{
+          background:
+            'linear-gradient(to top, rgba(0,0,0,0.4), rgba(0,0,0,0) 200px), linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0) 300px)',
+        }}
       />
-    <CardContent sx={{ height: "60%" }}>
-      <Grid container direction="column" justifyContent="center" alignItems="flex-start" spacing={1}>
-          <Grid item container direction="row" justifyContent="space-between" alignItems="center">
-            <Grid item>
-              <Typography variant="h6" color="primary">{`${flight.airline.IATA} ${flight.flight.flightNumber}`}</Typography>
-            </Grid>
-            <Grid item container direction='row' spacing={1}>
-              <Grid item>
-                <Chip label={flight.aircraft.registrationNum} color="primary" />
-              </Grid>
-              <Grid item>
-                <Chip label={flight.aircraft.aircraftType.ICAO} color="primary" variant="outlined" />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
+      <CardContent sx={{ justifyContent: 'flex-end' }}>
+        <Typography level="h2" fontSize="lg" fontWeight="lg" align="left" textColor="#fff" mb={1}>
+          {aircraft.registrationNum}
+        </Typography>
+        <Typography
+          align="left"
+          textColor="neutral.300"
+        >
+          {startCase(aircraft?.airline?.name.toLowerCase())}
+        </Typography>
       </CardContent>
     </Card>
-  );
+  )
 }
