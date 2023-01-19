@@ -1,62 +1,64 @@
-import React, { useState, useEffect } from 'react';
-import Container from '@mui/material/Container';
-import useAuth from "../../hooks/useAuth"
-import useAxiosPrivate from "../../hooks/useAxiosPrivate"
+import React, { useState, useEffect } from "react";
+import Container from "@mui/material/Container";
+import useAuth from "../../hooks/useAuth";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
-import { NotificationsList } from "./NotificationsListComponent"
-import { CenteredTextComponent } from "../components/CenteredTextComponent"
-
+import { NotificationsList } from "./NotificationsListComponent";
+import { CenteredTextComponent } from "../components/CenteredTextComponent";
 
 export const BaseForNotificationsPage = () => {
-  const { auth } = useAuth()
-  const axiosPrivate = useAxiosPrivate()
+  const { auth } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
 
   const [notificationsForUser, setNotificationsForUser] = useState({
     isLoading: true,
-    data: []
-  })
+    data: [],
+  });
 
   useEffect(() => {
     const getUserNotifications = async () => {
       setNotificationsForUser({
         isLoading: true,
-        data: []
-      })
+        data: [],
+      });
 
       try {
         const reqBody = {
-          userId: auth?.userId
-        }
+          userId: auth?.userId,
+        };
 
         const userNotifications = await axiosPrivate({
           url: "/notifications",
           method: "post",
-          data: reqBody
-        })
+          data: reqBody,
+        });
 
         setNotificationsForUser({
           isLoading: false,
-          data: userNotifications.data
-        })
-      } catch(e) {
+          data: userNotifications.data,
+        });
+      } catch (e) {
         console.log(e);
         setNotificationsForUser({
           isLoading: false,
-          data: []
-        })
+          data: [],
+        });
       }
-    }
+    };
 
-    getUserNotifications()
-  }, [auth])
+    getUserNotifications();
+  }, [auth]);
 
   useEffect(() => {
     console.log(notificationsForUser.data);
-  }, [notificationsForUser])
+  }, [notificationsForUser]);
 
   return (
     <Container maxWidth="lg">
-      <NotificationsList userId={auth?.userId} notifications={notificationsForUser.data} />
+      <NotificationsList
+        userId={auth?.userId}
+        notificationsForUser={notificationsForUser}
+      />
     </Container>
-  )
-}
+  );
+};
