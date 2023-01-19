@@ -32,23 +32,24 @@ export const BottomNavigationComponent = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!auth?.userId) {
-      return;
-    }
-    const socket = io(BASE_URL, {
-      query: {
-        userId: auth?.userId,
-      },
-    });
-
-    socket.on("notificationsForUser", (notifications) => {
-      // Update the count on the bell icon
-      setNotificationsCount(notifications.length);
-    });
-
-    return () => {
-      socket.disconnect();
-    };
+    // if (!auth?.userId) {
+    //   return;
+    // }
+    // const socket = io(BASE_URL, {
+    //   query: {
+    //     userId: auth?.userId,
+    //   },
+    // });
+    //
+    // socket.on("notificationsForUser", (notifications) => {
+    //   console.log("Notifications updated");
+    //   // Update the count on the bell icon
+    //   setNotificationsCount(notifications.length);
+    // });
+    //
+    // return () => {
+    //   socket.disconnect();
+    // };
   }, [auth]);
 
   useEffect(() => {
