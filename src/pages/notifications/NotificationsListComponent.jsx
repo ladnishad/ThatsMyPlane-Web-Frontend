@@ -41,6 +41,11 @@ export const NotificationsList = ({ userId, notificationsForUser }) => {
     <List>
       {notificationsForUser.data.map(
         ({ actorUserId, action, entity, actor, timestamp }) => {
+          entity =
+            entity === "flight" || entity === "post"
+              ? entity
+              : "repeating flight";
+
           const notification = `${
             actorUserId === userId
               ? "You"
@@ -51,7 +56,7 @@ export const NotificationsList = ({ userId, notificationsForUser }) => {
 
           return (
             <>
-              <ListItem variant="soft" color="primary">
+              <ListItem>
                 <ListItemDecorator
                   sx={{ alignSelf: "flex-start", marginRight: "20px" }}
                 >
