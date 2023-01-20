@@ -43,7 +43,13 @@ export const UserAircraftCardComponent = ({
         }
       }}
     >
-      <CardCover>
+      <CardCover
+        sx={{
+          background: !isDataLoading
+            ? "linear-gradient(to top, rgba(0,0,0,0.4), rgba(0,0,0,0) 200px), linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0) 300px)"
+            : "",
+        }}
+      >
         {isDataLoading ? (
           <Skeleton variant="rectangular" />
         ) : (
@@ -59,12 +65,6 @@ export const UserAircraftCardComponent = ({
           />
         )}
       </CardCover>
-      <CardCover
-        sx={{
-          background:
-            "linear-gradient(to top, rgba(0,0,0,0.4), rgba(0,0,0,0) 200px), linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0) 300px)",
-        }}
-      />
       <CardContent sx={{ justifyContent: "flex-end" }}>
         <Typography
           level="h2"
