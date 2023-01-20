@@ -49,10 +49,6 @@ export const BaseForNotificationsPage = () => {
     getUserNotifications();
   }, [auth]);
 
-  useEffect(() => {
-    console.log(notificationsForUser.data);
-  }, [notificationsForUser]);
-
   return (
     <Container maxWidth="lg" className="animate__animated animate__fadeIn">
       <NotificationsList
