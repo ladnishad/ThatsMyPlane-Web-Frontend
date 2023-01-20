@@ -54,7 +54,7 @@ export const BaseForNotificationsPage = () => {
   }, [notificationsForUser]);
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" className="animate__animated animate__fadeIn">
       <NotificationsList
         userId={auth?.userId}
         notificationsForUser={notificationsForUser}

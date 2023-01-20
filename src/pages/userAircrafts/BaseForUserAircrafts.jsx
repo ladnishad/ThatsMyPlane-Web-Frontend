@@ -1,73 +1,81 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
 
-import List from '@mui/joy/List';
+import List from "@mui/joy/List";
 
-import useAuth from "../../hooks/useAuth"
-import useAxiosPrivate from "../../hooks/useAxiosPrivate"
+import useAuth from "../../hooks/useAuth";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
-import { UserAircraftTypesFilterChipComponent } from "./UserAircraftTypesFilterChipNew"
-import { CenteredTextComponent } from "../components/CenteredTextComponent"
-import { UserFlightsListComponent } from "./UserFlightsList"
-import { UserAircraftDetailsDrawer } from "./userAircraftDetails/BaseForUserAircraftDetails"
+import { UserAircraftTypesFilterChipComponent } from "./UserAircraftTypesFilterChipNew";
+import { CenteredTextComponent } from "../components/CenteredTextComponent";
+import { UserAircraftsListComponent } from "./UserAircraftsList";
+import { UserAircraftDetailsDrawer } from "./userAircraftDetails/BaseForUserAircraftDetails";
 
 export const BaseForUserAircraftsComponent = () => {
-  const [aircraftTypesByFilters, setAircraftTypesByFilters] = useState([])
-  const [UserFlightsData, setUserFlightsData] = useState([])
-  const [flightsToShow, setFlightsToShow] = useState([])
+  const [UserFlightsData, setUserFlightsData] = useState([]);
+  const [isDataLoading, setIsDataLoading] = useState(true);
 
-  const [openFlightDetailsDrawer, setFlightDetailsDrawer] = useState(false)
-  const [aircraftToShow, setAircraftToShow] = useState(null)
+  const [openAircraftDetailsDrawer, setOpenAircraftDetailsDrawer] =
+    useState(false);
 
-  const { auth } = useAuth()
-  const axiosPrivate = useAxiosPrivate()
+  const [aircraftToShow, setAircraftToShow] = useState(null);
+
+  const { auth } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
-    const getUserAircrafts = async() => {
-      try{
-        const reqBody = {
-          userId: auth?.userId
+    if (!openAircraftDetailsDrawer) {
+      setIsDataLoading(true);
+      const getUserAircrafts = async () => {
+        try {
+          const reqBody = {
+            userId: auth?.userId,
+          };
+
+          const UserAircraftsReq = await axiosPrivate({
+            url: "/user/aircrafts",
+            method: "post",
+            data: reqBody,
+          });
+
+          setUserFlightsData(UserAircraftsReq.data);
+          setIsDataLoading(false);
+        } catch (e) {
+          setIsDataLoading(false);
+          console.log(e);
         }
+      };
 
-        const UserAircraftsReq = await axiosPrivate({
-          url: "/user/aircrafts",
-          method: "post",
-          data: reqBody
-        })
-
-        setUserFlightsData(UserAircraftsReq.data)
-        console.log(UserAircraftsReq.data);
-      } catch(e){
-        console.log(e);
-      }
+      getUserAircrafts();
     }
+  }, [openAircraftDetailsDrawer]);
 
-    getUserAircrafts()
-  }, [])
-
-  return(
+  return (
     <>
-    <Container maxWidth="lg">
-      <Grid container direction="column" spacing={2}>
-        <Grid item container spacing={2} xs={12}>
-          <UserFlightsListComponent
-            aircraftsToShow={UserFlightsData}
-            openFlightDetailsDrawer={openFlightDetailsDrawer}
-            setFlightDetailsDrawer={setFlightDetailsDrawer}
-            aircraftToShow={aircraftToShow}
-            setAircraftToShow={setAircraftToShow}
-          />
+      <Container maxWidth="lg">
+        <Grid container direction="column" spacing={2}>
+          <Grid item container spacing={2} xs={12}>
+            <UserAircraftsListComponent
+              aircraftsToShow={UserFlightsData}
+              openAircraftDetailsDrawer={openAircraftDetailsDrawer}
+              setOpenAircraftDetailsDrawer={setOpenAircraftDetailsDrawer}
+              aircraftToShow={aircraftToShow}
+              setAircraftToShow={setAircraftToShow}
+              isDataLoading={isDataLoading}
+            />
+          </Grid>
         </Grid>
-      </Grid>
-    </Container>
-    {
-      openFlightDetailsDrawer && (
-        <UserAircraftDetailsDrawer open={openFlightDetailsDrawer} setOpen={setFlightDetailsDrawer} aircraftToShow={aircraftToShow} />
-      )
-    }
+      </Container>
+      {openAircraftDetailsDrawer && (
+        <UserAircraftDetailsDrawer
+          open={openAircraftDetailsDrawer}
+          setOpen={setOpenAircraftDetailsDrawer}
+          aircraftToShow={aircraftToShow}
+        />
+      )}
     </>
-  )
-}
+  );
+};
