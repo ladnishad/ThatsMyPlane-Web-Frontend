@@ -6,6 +6,8 @@ import { CenteredTextComponent } from "./pages/components/CenteredTextComponent"
 import { BaseForHomePage } from "./pages/homePage/BaseForHomePage"
 import { BaseForUserAircraftsComponent } from "./pages/userAircrafts/BaseForUserAircrafts"
 import { BaseForPostPage } from "./pages/post/BaseForPostPage"
+
+import { BaseForNotificationsPage } from "./pages/notifications/BaseComponent"
 // import { BaseForAccountPage } from "./pages/account/BaseComponent"
 import { BaseForAccountPage } from "./pages/account/BaseComponentNew"
 
@@ -35,7 +37,7 @@ export const PrivateRoutes = [
   },
   {
     path: "notifications",
-    element: <CenteredTextComponent text="Notifications" /> ,
+    element: <BaseForNotificationsPage /> ,
   },
   {
     path: "account",
