@@ -15,13 +15,13 @@ import { CenteredLoadingComponent } from "../../components/CenteredLoadingCompon
 import { CenteredTextComponent } from "../../components/CenteredTextComponent"
 import { RecommendedFlightsList } from "./RecommendedFlightsListComponent"
 import { ConfirmDialogComponent } from "../../components/ConfirmDialogComponent"
-import { ConfirmDialogWithMediaComponent } from "./ConfirmDialogWithMedia"
+import { ConfirmDialogWithMediaComponent } from "./NewConfirmDialogWithMedia"
 
 export const BaseForFlightTabComponent = () => {
   const { auth } = useAuth()
   const axiosPrivate = useAxiosPrivate()
 
-  const [searchByRegistration, setSearchByRegistration] = useState(true)
+  const [searchByRegistration, setSearchByRegistration] = useState(false)
   const [selectedFlight, setSelectedFlight] = useState({})
   const [visibility, setVisibility] = useState("Private")
   const [caption, setCaption] = useState("")
@@ -75,7 +75,7 @@ export const BaseForFlightTabComponent = () => {
         <Grid item xs={12} className="animate__animated animate__fadeIn animate__faster" >
           <Card>
             <CardContent>
-              <FlightFormComponent setRecommendedFlights={setRecommendedFlights} searchByRegistration={searchByRegistration} setSearchByRegistration={setSearchByRegistration} selectedFlight={selectedFlight} />
+              <FlightFormComponent recommendedFlights={recommendedFlights} setRecommendedFlights={setRecommendedFlights} searchByRegistration={searchByRegistration} setSearchByRegistration={setSearchByRegistration} selectedFlight={selectedFlight} />
             </CardContent>
           </Card>
         </Grid>
@@ -101,7 +101,7 @@ export const BaseForFlightTabComponent = () => {
       </Grid>
       {
         openConfirmAddFlightDialog && (
-            <ConfirmDialogWithMediaComponent open={openConfirmAddFlightDialog} flight={selectedFlight} setOpen={setOpenConfirmAddFlightDialog} title="Confirm add aircraft" message="Review visibility and add a caption" handleConfirm={handleAddFlight} visibility={visibility} setVisibility={setVisibility} caption={caption} setCaption={setCaption} />
+            <ConfirmDialogWithMediaComponent open={openConfirmAddFlightDialog} flight={selectedFlight} setOpen={setOpenConfirmAddFlightDialog} title="Confirm" message="Review visibility and add a caption" handleConfirm={handleAddFlight} visibility={visibility} setVisibility={setVisibility} caption={caption} setCaption={setCaption} />
         )
       }
       </>
