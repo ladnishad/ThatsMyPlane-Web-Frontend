@@ -1,57 +1,58 @@
-import React, { useState, useEffect } from "react"
-import { styled } from '@mui/material/styles';
-import dayjs from "dayjs"
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import Divider from '@mui/material/Divider';
-import Collapse from '@mui/material/Collapse';
-import Typography from '@mui/material/Typography';
+import React, { useState, useEffect } from "react";
+import { styled } from "@mui/material/styles";
+import dayjs from "dayjs";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import Divider from "@mui/material/Divider";
+import Collapse from "@mui/material/Collapse";
+import Typography from "@mui/material/Typography";
 // import Button from '@mui/material/Button';
-import Button from '@mui/joy/Button';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
-import SavedSearchIcon from '@mui/icons-material/SavedSearch';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Tooltip from '@mui/material/Tooltip';
-import useAxiosPrivate from "../../../hooks/useAxiosPrivate"
-import useAuth from "../../../hooks/useAuth"
-import { DatePickerComponent } from "../../components/DatePicker"
-import { AlertFeedbackComponent } from "../../components/AlertFeedbackComponent"
+import Button from "@mui/joy/Button";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import SavedSearchIcon from "@mui/icons-material/SavedSearch";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Tooltip from "@mui/material/Tooltip";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import useAuth from "../../../hooks/useAuth";
+import { DatePickerComponent } from "../../components/DatePicker";
+import { AlertFeedbackComponent } from "../../components/AlertFeedbackComponent";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
+  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+  marginLeft: "auto",
+  transition: theme.transitions.create("transform", {
     duration: theme.transitions.duration.shortest,
   }),
 }));
 
 export const AirlineSelect = ({ value, setValue }) => {
-  const [airlines, setAirlines] = useState([])
-  const axiosPrivate = useAxiosPrivate()
+  const [airlines, setAirlines] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
-    const getAirlines = async() => {
+    const getAirlines = async () => {
       try {
         const airlinesToSet = await axiosPrivate({
           url: "/airlines",
-          method: 'get'
-        })
-        const airlinesList = airlinesToSet.data
+          method: "get",
+        });
+        const airlinesList = airlinesToSet.data;
 
-        setAirlines(airlinesList)
-        return airlinesList
-      } catch(e){
+        setAirlines(airlinesList);
+        return airlinesList;
+      } catch (e) {
         console.log(e);
       }
-    }
-    getAirlines()
-  }, [])
+    };
+    getAirlines();
+  }, []);
 
   return (
     <Autocomplete
@@ -60,13 +61,17 @@ export const AirlineSelect = ({ value, setValue }) => {
       disablePortal
       value={value}
       onChange={(e, newValue) => {
-        setValue(newValue)
+        setValue(newValue);
       }}
       options={airlines}
       autoHighlight
       getOptionLabel={(airline) => airline.name}
       renderOption={(props, airline) => (
-        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+        <Box
+          component="li"
+          sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+          {...props}
+        >
           {airline.name} ({airline.ICAO})
         </Box>
       )}
@@ -78,58 +83,92 @@ export const AirlineSelect = ({ value, setValue }) => {
           name="airline-select-text"
           inputProps={{
             ...params.inputProps,
-            autoComplete: 'new-password', // disable autocomplete and autofill
+            autoComplete: "new-password", // disable autocomplete and autofill
           }}
         />
       )}
     />
   );
-}
+};
 
-export const AircraftRegistrationEntry = ({ value, setAircraftRegistration, required=false }) => {
-    return (
-      <TextField style={{ width: "100%"}} value={value} onChange={(e) => setAircraftRegistration(e.target.value)} required={required} id="aircraft-registration" name="aircraft-registration" label="Aircraft Registration" />
-    )
-}
-
-export const FlightNumberEntry = ({ value, setFlightNumber, required=false }) => {
+export const AircraftRegistrationEntry = ({
+  value,
+  setAircraftRegistration,
+  required = false,
+}) => {
   return (
-      <TextField style={{ width: "100%"}} value={value} onChange={(e) => setFlightNumber(e.target.value)} requried={required} id="flight-number" name="flight-number" label="Flight Number" />
-    )
-}
+    <TextField
+      style={{ width: "100%" }}
+      value={value}
+      onChange={(e) => setAircraftRegistration(e.target.value)}
+      required={required}
+      id="aircraft-registration"
+      name="aircraft-registration"
+      label="Aircraft Registration"
+    />
+  );
+};
 
-export const SearchByLabel = ({ searchByRegistration, setSearchByRegistration }) => {
+export const FlightNumberEntry = ({
+  value,
+  setFlightNumber,
+  required = false,
+}) => {
   return (
-    <Typography variant="caption" display="block" gutterBottom color="primary" style={{ cursor: "pointer" }} onClick={() => setSearchByRegistration(!searchByRegistration)} >
+    <TextField
+      style={{ width: "100%" }}
+      value={value}
+      onChange={(e) => setFlightNumber(e.target.value)}
+      requried={required}
+      id="flight-number"
+      name="flight-number"
+      label="Flight Number"
+    />
+  );
+};
+
+export const SearchByLabel = ({
+  searchByRegistration,
+  setSearchByRegistration,
+}) => {
+  return (
+    <Typography
+      variant="caption"
+      display="block"
+      gutterBottom
+      color="primary"
+      style={{ cursor: "pointer" }}
+      onClick={() => setSearchByRegistration(!searchByRegistration)}
+    >
       <SavedSearchIcon />
-      {
-        ` Search by ${searchByRegistration ? "flight number" : "aircaft registration"} instead`
-      }
+      {` Search by ${
+        searchByRegistration ? "flight number" : "aircaft registration"
+      } instead`}
     </Typography>
-  )
-}
+  );
+};
 
 export const AircraftTypeSelect = ({ value, setValue }) => {
-  const [aircraftTypes, setAircraftTypes] = useState([])
-  const axiosPrivate = useAxiosPrivate()
+  const [aircraftTypes, setAircraftTypes] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
-    const getAircraftTypes = async() => {
+    const getAircraftTypes = async () => {
       try {
         const aircraftTypesResponse = await axiosPrivate({
           url: "/aircraft/types",
-          method: 'get'
-        })
-        const aircraftTypesList = aircraftTypesResponse.data
+          method: "get",
+        });
+        const aircraftTypesList = aircraftTypesResponse.data;
 
-        setAircraftTypes(aircraftTypesList)
-        return aircraftTypesList
-      } catch(e){
+        setAircraftTypes(aircraftTypesList);
+        return aircraftTypesList;
+      } catch (e) {
         console.log(e);
       }
-    }
-    getAircraftTypes()
-  }, [])
+    };
+    getAircraftTypes();
+  }, []);
 
   return (
     <Autocomplete
@@ -138,13 +177,17 @@ export const AircraftTypeSelect = ({ value, setValue }) => {
       value={value}
       disablePortal
       onChange={(e, newValue) => {
-        setValue(newValue)
+        setValue(newValue);
       }}
       options={aircraftTypes}
       autoHighlight
       getOptionLabel={(aircraftType) => aircraftType.model}
       renderOption={(props, aircraftType) => (
-        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+        <Box
+          component="li"
+          sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+          {...props}
+        >
           {aircraftType.model} ({aircraftType.ICAO})
         </Box>
       )}
@@ -156,48 +199,48 @@ export const AircraftTypeSelect = ({ value, setValue }) => {
           name="aircraft-type-select-text"
           inputProps={{
             ...params.inputProps,
-            autoComplete: 'new-password', // disable autocomplete and autofill
+            autoComplete: "new-password", // disable autocomplete and autofill
           }}
         />
       )}
     />
   );
-}
+};
 
 export const AirportsSelect = ({ airportType, value, setValue }) => {
-  const [textFieldValue, setTextFieldValue] = useState("")
-  const [airports, setAirports] = useState([])
-  const axiosPrivate = useAxiosPrivate()
+  const [textFieldValue, setTextFieldValue] = useState("");
+  const [airports, setAirports] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
-    const getAirports = async() => {
+    const getAirports = async () => {
       try {
         const reqBody = {
-          searchParam: textFieldValue
-        }
+          searchParam: textFieldValue,
+        };
 
-        if(textFieldValue.length > 2){
+        if (textFieldValue.length > 2) {
           console.log("Called api");
           const airportsResponse = await axiosPrivate({
             url: "/search/airports",
-            method: 'post',
-            data: reqBody
-          })
-          const airportsList = airportsResponse.data
+            method: "post",
+            data: reqBody,
+          });
+          const airportsList = airportsResponse.data;
 
-          if(airportsList.length){
-            setAirports(airportsList)
+          if (airportsList.length) {
+            setAirports(airportsList);
           }
-          return airportsList
+          return airportsList;
         }
-        setAirports([])
-        return []
-      } catch(e){
+        setAirports([]);
+        return [];
+      } catch (e) {
         console.log(e);
       }
-    }
-    getAirports()
-  }, [textFieldValue])
+    };
+    getAirports();
+  }, [textFieldValue]);
 
   return (
     <Autocomplete
@@ -207,22 +250,31 @@ export const AirportsSelect = ({ airportType, value, setValue }) => {
       value={value}
       options={airports}
       onChange={(e, newValue) => {
-        setValue(newValue)
+        setValue(newValue);
       }}
       autoHighlight
       getOptionLabel={(airport) => `${airport.name}`}
       renderOption={(props, airport) => (
-        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-          <Grid container
+        <Box
+          component="li"
+          sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+          {...props}
+        >
+          <Grid
+            container
             direction="column"
             justifyContent="flex-start"
             alignItems="center"
           >
             <Grid item xs={12}>
-              <Typography variant="subtitle2">{airport.name} ({airport.IATA})</Typography>
+              <Typography variant="subtitle2">
+                {airport.name} ({airport.IATA})
+              </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="body2">{airport.city}, {airport.state}, {airport.country}</Typography>
+              <Typography variant="body2">
+                {airport.city}, {airport.state}, {airport.country}
+              </Typography>
             </Grid>
           </Grid>
         </Box>
@@ -232,7 +284,7 @@ export const AirportsSelect = ({ airportType, value, setValue }) => {
           {...params}
           label={`Choose ${airportType} airport`}
           name={`${airportType}-airport-select-text`}
-          autoComplete='off'
+          autoComplete="off"
           inputProps={{
             ...params.inputProps,
             // autoComplete: 'new-password', // disable autocomplete and autofill
@@ -242,305 +294,195 @@ export const AirportsSelect = ({ airportType, value, setValue }) => {
       )}
     />
   );
-}
+};
 
-export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistration, setSearchByRegistration, selectedFlight }) => {
+export const FlightFormComponent = ({
+  recommendedFlights,
+  setRecommendedFlights,
+  searchByRegistration,
+  setSearchByRegistration,
+  selectedFlight,
+}) => {
   const [expanded, setExpanded] = useState(false);
-  const [allFieldsFilled, setAllFieldsFilled] = useState(false)
-  const [requiredFieldsFilled, setRequiredFieldsFilled] = useState(false)
-  const [searchedNoResult, setSearchedNoResult] = useState(false)
-  const { auth } = useAuth()
-  const axiosPrivate = useAxiosPrivate()
+  const [allFieldsFilled, setAllFieldsFilled] = useState(false);
+  const [requiredFieldsFilled, setRequiredFieldsFilled] = useState(false);
+
+  const [searchReturnedResult, setSearchReturnedResult] = useState(false);
+  const [searchedNoResult, setSearchedNoResult] = useState(false);
+
+  const { auth } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
 
   // Form states
-  const [aircraftRegistration, setAircraftRegistration] = useState("")
-  const [flightNumber, setFlightNumber] = useState("")
-  const [date, setDate] = useState(dayjs().valueOf())
-  const [airlineSelect, setAirlineSelect] = useState(null)
-  const [arrivalAirportSelect, setArrivalAirportSelect] = useState(null)
-  const [departureAirportSelect, setDepartureAirportSelect] = useState(null)
-  const [aircraftTypeSelect, setAircraftTypeSelect] = useState(null)
+  const [aircraftRegistration, setAircraftRegistration] = useState("");
+  const [flightNumber, setFlightNumber] = useState("");
+  const [date, setDate] = useState(dayjs().valueOf());
+  const [airlineSelect, setAirlineSelect] = useState(null);
+  const [arrivalAirportSelect, setArrivalAirportSelect] = useState(null);
+  const [departureAirportSelect, setDepartureAirportSelect] = useState(null);
+  const [aircraftTypeSelect, setAircraftTypeSelect] = useState(null);
 
   // Feedback state
   const [notify, setNotify] = useState({
     message: "",
     type: "",
-    open: false
-  })
+    open: false,
+  });
 
   useEffect(() => {
-    if(date !== null && (aircraftRegistration !== "" || flightNumber !== "")){
-      setRequiredFieldsFilled(true)
+    if (date !== null && (aircraftRegistration !== "" || flightNumber !== "")) {
+      setRequiredFieldsFilled(true);
+    } else if (
+      requiredFieldsFilled &&
+      airlineSelect !== null &&
+      arrivalAirportSelect !== null &&
+      departureAirportSelect !== null &&
+      aircraftTypeSelect !== null
+    ) {
+      setAllFieldsFilled(true);
+    } else {
+      setRequiredFieldsFilled(false);
+      setAllFieldsFilled(false);
     }
-    else if(requiredFieldsFilled && airlineSelect !== null && arrivalAirportSelect !== null && departureAirportSelect !== null && aircraftTypeSelect!==null){
-      setAllFieldsFilled(true)
+  }, [
+    aircraftRegistration,
+    flightNumber,
+    date,
+    airlineSelect,
+    arrivalAirportSelect,
+    departureAirportSelect,
+    aircraftTypeSelect,
+  ]);
+
+  useEffect(() => {
+    if (!recommendedFlights.isLoading && recommendedFlights.data.length) {
+      setSearchReturnedResult(true);
     }
-    else{
-      setRequiredFieldsFilled(false)
-      setAllFieldsFilled(false)
-    }
-  }, [aircraftRegistration, flightNumber, date, airlineSelect, arrivalAirportSelect, departureAirportSelect, aircraftTypeSelect])
+  }, [recommendedFlights]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  const handleSubmit = async(event) => {
-    event.preventDefault()
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-    const currentTime = dayjs().valueOf()
+    if (!searchedNoResult) {
+      const flightIdent = {
+        type: searchByRegistration ? "registration" : "flightNumber",
+        value: searchByRegistration ? aircraftRegistration : flightNumber,
+      };
 
-      if(searchByRegistration && !searchedNoResult){
-        if(date < currentTime){
-          const flightSearchParam = aircraftRegistration
+      try {
+        setRecommendedFlights({
+          isLoading: true,
+          data: [],
+        });
 
-          console.log("Calling historic data api");
+        const flightsToRecommend = await axiosPrivate({
+          url: "/search/flights",
+          method: "post",
+          data: {
+            flightIdent,
+            flightDate: date,
+          },
+        });
 
-          try{
-            setRecommendedFlights({
-              isLoading: true,
-              data: []
-            })
+        if (flightsToRecommend?.data.length) {
+          setRecommendedFlights({
+            isLoading: false,
+            data: flightsToRecommend?.data,
+          });
+        } else {
+          setRecommendedFlights({
+            isLoading: false,
+            data: [],
+          });
 
-            const SearchHistoricFlight = await axiosPrivate({
-              url: "/search/historic/flights",
-              method: "post",
-              data: {
-                flightSearchParam,
-                flightDate: date
-              }
-            })
+          setNotify({
+            message: "No flights found. Please add manually.",
+            type: "warning",
+            open: true,
+          });
 
-            console.log(SearchHistoricFlight.data);
-            if(SearchHistoricFlight.data.length){
-              setRecommendedFlights({
-                isLoading: false,
-                data: SearchHistoricFlight.data
-              })
-            }
-            else{
-              setRecommendedFlights({
-                isLoading: false,
-                data: []
-              })
-
-              setNotify({
-                message: "No flights found. Please add manually.",
-                type: "warning",
-                open: true
-              })
-
-              setSearchedNoResult(true)
-            }
-          } catch(e){
-            console.log(e);
-          }
+          setSearchedNoResult(true);
         }
-        else{
-          console.log("Call search by registration api");
-            try{
-              setRecommendedFlights({
-                isLoading: true,
-                data: []
-              })
-              const SearchByRegistrationReq = await axiosPrivate({
-                url: "/search/flights/registration",
-                method: "post",
-                data: {
-                  registrationNumber: aircraftRegistration,
-                  flightDate: date
-                }
-              })
-
-              if(SearchByRegistrationReq.data.length){
-                setRecommendedFlights({
-                  isLoading: false,
-                  data: SearchByRegistrationReq.data
-                })
-              }
-              else{
-                setRecommendedFlights({
-                  isLoading: false,
-                  data: []
-                })
-
-                setNotify({
-                  message: "No flights found. Please add manually.",
-                  type: "warning",
-                  open: true
-                })
-
-                setSearchedNoResult(true)
-              }
-            }
-
-            catch(e){
-              console.log(e);
-            }
-        }
+      } catch (e) {
+        console.log(e);
       }
-      if(!searchByRegistration && !searchedNoResult){
-        if(date < currentTime){
-          const flightSearchParam = flightNumber
+    }
 
-          console.log("Calling historic data api");
-
-          try{
-            setRecommendedFlights({
-              isLoading: true,
-              data: []
-            })
-
-            const SearchHistoricFlight = await axiosPrivate({
-              url: "/search/historic/flights",
-              method: "post",
-              data: {
-                flightSearchParam,
-                flightDate: date
-              }
-            })
-
-            console.log(SearchHistoricFlight.data);
-            if(SearchHistoricFlight.data.length){
-              setRecommendedFlights({
-                isLoading: false,
-                data: SearchHistoricFlight.data
-              })
-            }
-            else{
-              setRecommendedFlights({
-                isLoading: false,
-                data: []
-              })
-
-              setNotify({
-                message: "No flights found. Please add manually.",
-                type: "warning",
-                open: true
-              })
-
-              setSearchedNoResult(true)
-            }
-          } catch(e){
-            console.log(e);
-          }
-        }
-
-        else {
-          console.log("Call search by flight number api");
-
-          try{
-            setRecommendedFlights({
-              isLoading: true,
-              data: []
-            })
-            const SearchByFlightNumberReq = await axiosPrivate({
-              url: "/search/flights/flightNumber",
-              method: "post",
-              data: {
-                flightNumber,
-                flightDate: date
-              }
-            })
-
-            if(SearchByFlightNumberReq.data.length){
-              setRecommendedFlights({
-                isLoading: false,
-                data: SearchByFlightNumberReq.data
-              })
-            }
-            else{
-              setRecommendedFlights({
-                isLoading: false,
-                data: []
-              })
-
-              setNotify({
-                message: "No flights found. Please add manually.",
-                type: "warning",
-                open: true
-              })
-
-              setSearchedNoResult(true)
-            }
-          }
-
-          catch(e){
-            console.log(e);
+    // Typically when no results
+    else {
+      let reqBody = {};
+      if (searchedNoResult) {
+        if (allFieldsFilled) {
+          console.log(`No need to call api. All fields present`);
+          reqBody = {
+            userId: auth.userId,
+            flightInformation: {
+              airlineIATA: airlineSelect.IATA,
+              airlineICAO: airlineSelect.ICAO,
+              aircraftRegistration,
+              aircraftType: aircraftTypeSelect.ICAO,
+              originICAO: departureAirportSelect.ICAO,
+              destinationICAO: arrivalAirportSelect.ICAO,
+              scheduledOut: date,
+              flightNumber,
+            },
+          };
+        } else {
+          console.log(`No results found will add based on data entered`);
+          if (!aircraftRegistration && !date) {
+            // throw error flight cant be added
             setNotify({
-              message: e.reason,
+              message: "Cannot add flight",
               type: "error",
-              open: true
-            })
-          }
-        }
-      }
-      // Typically when no results
-      else {
-        let reqBody = {}
-        if(searchedNoResult){
-          if(allFieldsFilled){
-            console.log(`No need to call api. All fields present`);
+              open: true,
+            });
+          } else {
             reqBody = {
               userId: auth.userId,
               flightInformation: {
-                airlineIATA: airlineSelect.IATA,
-                airlineICAO: airlineSelect.ICAO,
+                airlineIATA: airlineSelect?.IATA ? airlineSelect.IATA : null,
+                airlineICAO: airlineSelect?.ICAO ? airlineSelect.ICAO : null,
                 aircraftRegistration,
-                aircraftType: aircraftTypeSelect.ICAO,
-                originICAO: departureAirportSelect.ICAO,
-                destinationICAO: arrivalAirportSelect.ICAO,
+                aircraftType: aircraftTypeSelect?.ICAO
+                  ? aircraftTypeSelect.ICAO
+                  : null,
+                originICAO: departureAirportSelect?.ICAO
+                  ? departureAirportSelect.ICAO
+                  : null,
+                destinationICAO: arrivalAirportSelect?.ICAO
+                  ? arrivalAirportSelect.ICAO
+                  : null,
                 scheduledOut: date,
-                flightNumber
+                flightNumber: flightNumber ? flightNumber : null,
               },
-            }
-          }
-          else{
-            console.log(`No results found will add based on data entered`);
-            if(!aircraftRegistration && !date){
-              // throw error flight cant be added
-              setNotify({
-                message: "Cannot add flight",
-                type: "error",
-                open: true
-              })
-            }
-            else{
-              reqBody = {
-                userId: auth.userId,
-                flightInformation: {
-                  airlineIATA: airlineSelect?.IATA ? airlineSelect.IATA : null,
-                  airlineICAO: airlineSelect?.ICAO ? airlineSelect.ICAO : null,
-                  aircraftRegistration,
-                  aircraftType: aircraftTypeSelect?.ICAO ? aircraftTypeSelect.ICAO : null,
-                  originICAO: departureAirportSelect?.ICAO ? departureAirportSelect.ICAO : null,
-                  destinationICAO: arrivalAirportSelect?.ICAO ? arrivalAirportSelect.ICAO : null,
-                  scheduledOut: date,
-                  flightNumber: flightNumber ? flightNumber : null
-                },
-              }
-            }
-          }
-        }
-
-        if(Object.keys(reqBody).includes("flightInformation")){
-          try{
-            const SavedFlight = await axiosPrivate({
-              url: "/flight/add",
-              method: "post",
-              data: reqBody
-            })
-
-            setNotify({
-              message: "Successfully added flight.",
-              type: "success",
-              open: true
-            })
-          } catch(e){
-            console.log(e);
+            };
           }
         }
       }
+
+      if (Object.keys(reqBody).includes("flightInformation")) {
+        try {
+          const SavedFlight = await axiosPrivate({
+            url: "/flight/add",
+            method: "post",
+            data: reqBody,
+          });
+
+          setNotify({
+            message: "Successfully added flight.",
+            type: "success",
+            open: true,
+          });
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    }
+
     console.log(date);
     console.log(aircraftRegistration);
     console.log(flightNumber);
@@ -548,50 +490,83 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
     console.log(aircraftTypeSelect);
     console.log(departureAirportSelect);
     console.log(arrivalAirportSelect);
-  }
+  };
 
   return (
     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
       <Grid container direction="column" spacing={1}>
         <Grid item container spacing={1}>
           <Grid item xs={6} md={4}>
-            <DatePickerComponent fromPage="addFlight" date={date} setDate={setDate} />
+            <DatePickerComponent
+              fromPage="addFlight"
+              date={date}
+              setDate={setDate}
+            />
           </Grid>
 
           <Grid item xs={6} md={8}>
-            {
-              searchByRegistration ? (
-                <AircraftRegistrationEntry value={aircraftRegistration} setAircraftRegistration={setAircraftRegistration} required />
-              ) : (
-                <FlightNumberEntry value={flightNumber} setFlightNumber={setFlightNumber} required />
-              )
-            }
-
+            {searchByRegistration ? (
+              <AircraftRegistrationEntry
+                value={aircraftRegistration}
+                setAircraftRegistration={setAircraftRegistration}
+                required
+              />
+            ) : (
+              <FlightNumberEntry
+                value={flightNumber}
+                setFlightNumber={setFlightNumber}
+                required
+              />
+            )}
           </Grid>
         </Grid>
 
         <Grid item>
-          <SearchByLabel searchByRegistration={searchByRegistration} setSearchByRegistration={setSearchByRegistration} />
+          <SearchByLabel
+            searchByRegistration={searchByRegistration}
+            setSearchByRegistration={setSearchByRegistration}
+          />
         </Grid>
+
+        {(recommendedFlights.data.length > 0 || searchedNoResult) && (
+          <Grid item>
+            <Button
+              startDecorator={<RestartAltIcon />}
+              variant="solid"
+              // color="primary"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={() => {
+                setRecommendedFlights({
+                  isLoading: false,
+                  data: [],
+                });
+                setSearchReturnedResult(false);
+                setSearchedNoResult(false);
+              }}
+            >
+              Reset search
+            </Button>
+          </Grid>
+        )}
         <Grid item>
-          {
-            searchedNoResult === false && (
-              <Button
-                startDecorator={<SearchIcon />}
-                type="submit"
-                fullWidth
-                disabled={requiredFieldsFilled === false}
-                // variant="contained"
-                // color="primary"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                { allFieldsFilled ? "Add Flight" : "Search flight" }
-              </Button>
-            )
-          }
+          {searchReturnedResult === false && searchedNoResult === false && (
+            <Button
+              loading={recommendedFlights.isLoading}
+              startDecorator={<SearchIcon />}
+              type="submit"
+              fullWidth
+              disabled={requiredFieldsFilled === false}
+              // variant="contained"
+              // color="primary"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              {allFieldsFilled ? "Add Flight" : "Search flight"}
+            </Button>
+          )}
         </Grid>
-        <Grid item>
-          <Divider>
+        {searchedNoResult && (
+          <Grid item>
+            <Divider>
               <ExpandMore
                 expand={searchedNoResult}
                 onClick={handleExpandClick}
@@ -602,53 +577,70 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
                   <ExpandMoreIcon />
                 </Tooltip>
               </ExpandMore>
-          </Divider>
-        </Grid>
+            </Divider>
+          </Grid>
+        )}
 
         <Grid item>
           <Collapse in={searchedNoResult} timeout="auto" unmountOnExit>
             <Grid container spacing={1}>
               <Grid item xs={12} md={4}>
-                {
-                  searchByRegistration ? (
-                    <FlightNumberEntry value={flightNumber} setFlightNumber={setFlightNumber}/>
-                  ) : (
-                    <AircraftRegistrationEntry value={aircraftRegistration} setAircraftRegistration={setAircraftRegistration} />
-                  )
-                }
+                {searchByRegistration ? (
+                  <FlightNumberEntry
+                    value={flightNumber}
+                    setFlightNumber={setFlightNumber}
+                  />
+                ) : (
+                  <AircraftRegistrationEntry
+                    value={aircraftRegistration}
+                    setAircraftRegistration={setAircraftRegistration}
+                  />
+                )}
               </Grid>
               <Grid item xs={12} md={4}>
-                <AirlineSelect value={airlineSelect} setValue={setAirlineSelect} />
+                <AirlineSelect
+                  value={airlineSelect}
+                  setValue={setAirlineSelect}
+                />
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <AircraftTypeSelect value={aircraftTypeSelect} setValue={setAircraftTypeSelect} />
+                <AircraftTypeSelect
+                  value={aircraftTypeSelect}
+                  setValue={setAircraftTypeSelect}
+                />
               </Grid>
 
               <Grid item xs={6}>
-                <AirportsSelect airportType="departure" value={departureAirportSelect} setValue={setDepartureAirportSelect} />
+                <AirportsSelect
+                  airportType="departure"
+                  value={departureAirportSelect}
+                  setValue={setDepartureAirportSelect}
+                />
               </Grid>
 
               <Grid item xs={6}>
-                <AirportsSelect airportType="arrival" value={arrivalAirportSelect} setValue={setArrivalAirportSelect} />
+                <AirportsSelect
+                  airportType="arrival"
+                  value={arrivalAirportSelect}
+                  setValue={setArrivalAirportSelect}
+                />
               </Grid>
 
               <Grid item xs={12}>
-                {
-                  searchedNoResult && (
-                    <Button
-                      startDecorator={<SearchIcon />}
-                      type="submit"
-                      fullWidth
-                      disabled={requiredFieldsFilled === false}
-                      // variant="contained"
-                      // color="primary"
-                      sx={{ mt: 3, mb: 2 }}
-                    >
-                      Add Flight
-                    </Button>
-                  )
-                }
+                {searchedNoResult && (
+                  <Button
+                    startDecorator={<SearchIcon />}
+                    type="submit"
+                    fullWidth
+                    disabled={requiredFieldsFilled === false}
+                    // variant="contained"
+                    // color="primary"
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    Add Flight
+                  </Button>
+                )}
               </Grid>
             </Grid>
           </Collapse>
@@ -656,5 +648,5 @@ export const FlightFormComponent = ({ setRecommendedFlights, searchByRegistratio
       </Grid>
       <AlertFeedbackComponent alert={notify} setAlert={setNotify} />
     </Box>
-  )
-}
+  );
+};
